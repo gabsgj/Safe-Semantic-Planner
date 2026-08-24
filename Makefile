@@ -1,4 +1,4 @@
-CXX := clang++
+CXX ?= $(shell command -v clang++ 2>/dev/null || command -v g++ 2>/dev/null || echo g++)
 CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic -O3 -Iinclude -Ithird_party -I. -pthread
 
 BIN_DIR := bin

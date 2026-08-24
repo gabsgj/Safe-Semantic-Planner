@@ -5,13 +5,13 @@
 # Stage 1: Build Stage with full C++17 Toolchain
 FROM alpine:3.19 AS builder
 
-RUN apk add --no-cache g++ make cmake git
+RUN apk add --no-cache g++ clang make cmake git libstdc++
 
 WORKDIR /app
 COPY . .
 
-# Compile all binaries with maximum optimization (-O3)
-RUN make all
+# Compile high-performance server binary with -O3 optimization
+RUN make bin/ssp_server
 
 # Stage 2: Ultra-lightweight Production Runtime
 FROM alpine:3.19
@@ -20,7 +20,7 @@ RUN apk add --no-cache libstdc++ libgcc
 
 WORKDIR /app
 
-# Copy compiled binaries and web assets
+# Copy compiled binary and required web/data assets
 COPY --from=builder /app/bin/ssp_server ./bin/ssp_server
 COPY --from=builder /app/web ./web
 COPY --from=builder /app/data ./data
