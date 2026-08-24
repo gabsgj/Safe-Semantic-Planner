@@ -1,0 +1,49 @@
+{
+  "planner": {
+    "algorithm": "dstar_lite",
+    "alpha_goal": 100.0,
+    "beta_cost": 1.0,
+    "gamma_safety": 5.0,
+    "delta_reliability": 2.0,
+    "safety_clearance_margin": 1.5,
+    "hazard_barrier_decay_sigma": 1.0,
+    "hazard_critical_radius": 0.0,
+    "max_velocity_heuristic": 1.0,
+    "max_expansions": 100000,
+    "allow_replan": true
+  },
+  "spatial": {
+    "index_type": "kdtree",
+    "distance_metric": "euclidean",
+    "influence_radius": 3.0
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "web_root": "./web",
+    "enable_cors": true,
+    "log_requests": false
+  },
+  "domains": {
+    "default_template": "cartesian_benchmark",
+    "available_templates": [
+      "cartesian_benchmark",
+      "microservice_mesh",
+      "hospital_triage",
+      "banking_workflow",
+      "cloud_scheduler",
+      "knowledge_graph"
+    ]
+  },
+  "nlp": {
+    "mode": "hybrid_slot_parser",
+    "confidence_threshold": 0.75,
+    "enable_alias_matching": true
+  },
+  "agent": {
+    "max_backtrack_depth": 20,
+    "auto_rollback_on_bad_state": true,
+    "execution_timeout_ms": 5000,
+    "deduplicate_visited_states": true
+  }
+}

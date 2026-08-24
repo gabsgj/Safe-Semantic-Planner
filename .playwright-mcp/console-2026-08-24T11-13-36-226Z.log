@@ -1,0 +1,676 @@
+[     368ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8080/favicon.ico:0
+[   33192ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33197ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33206ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33207ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33223ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33239ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33240ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33257ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33274ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33289ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33290ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33306ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33306ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33323ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33340ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33357ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33374ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33389ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33390ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33406ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33407ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33423ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33427ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33439ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33440ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33456ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33457ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33473ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33474ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33489ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33490ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33507ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33523ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33523ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33539ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33540ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33555ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33556ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33573ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33590ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33606ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33607ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33623ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33639ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33640ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33656ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33656ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33672ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33672ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33689ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33690ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33706ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33723ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33723ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33739ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33740ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33756ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33757ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33773ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33773ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33790ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33790ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33806ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33807ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33823ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33827ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33839ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33840ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33856ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33857ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33874ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33889ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33890ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33906ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33923ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33923ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33939ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33940ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33956ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33956ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33973ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33973ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   33989ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   33990ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34006ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34007ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34023ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34023ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34039ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34040ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34056ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34056ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34073ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34073ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34089ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34090ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34107ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34123ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34123ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34140ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34141ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34156ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34157ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34173ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34173ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34189ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34190ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34206ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34206ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34223ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34239ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34239ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34257ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34277ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34289ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34290ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34306ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34307ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34323ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34340ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34356ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34373ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34389ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34390ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34423ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34427ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34440ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34443ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34457ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34457ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34488ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34489ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34506ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34523ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34523ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34540ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34541ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34556ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34557ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34574ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34590ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34592ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34606ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34607ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34623ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34656ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34656ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34672ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34672ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34689ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34690ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34706ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34723ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34723ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34740ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34741ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34756ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34757ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34772ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34773ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34789ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34790ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34806ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34806ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34823ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34823ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34839ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34840ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34856ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34857ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34873ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34889ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34890ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34906ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34923ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34923ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34939ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34940ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34956ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34957ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34973ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34973ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   34989ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   34990ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35005ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35006ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35022ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35023ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35039ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35040ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35055ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35060ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35073ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35074ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35089ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35090ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35107ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35208ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35238ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35239ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35257ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35273ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35289ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35290ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35305ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35305ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35323ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35340ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35357ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35372ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35372ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35389ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35390ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35406ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35407ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35423ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35423ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35439ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35440ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35456ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35456ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35472ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35473ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35489ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35490ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35507ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35522ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35523ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35539ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35540ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35605ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35605ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35623ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35639ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35640ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35656ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35656ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35673ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35673ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35689ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35690ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35707ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35722ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35723ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35739ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35740ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35756ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35757ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35773ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35774ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35789ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35790ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35823ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35824ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35839ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35840ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35873ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35889ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35890ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   35939ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   35940ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36472ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36472ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36489ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36490ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36506ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36523ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36523ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36539ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36540ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36556ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36557ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36577ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36590ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36606ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36607ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36623ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36639ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36640ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36656ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36656ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36673ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36673ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36689ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36690ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36706ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36723ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36723ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36739ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36741ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36755ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36756ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36773ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36773ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36789ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36790ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36806ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36807ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36822ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36822ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36839ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36840ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36856ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36856ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36873ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36889ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36890ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36906ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36922ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36923ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36939ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36940ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36956ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36957ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36973ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36973ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   36988ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   36989ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37005ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37006ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37023ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37023ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37039ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37040ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37056ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37056ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37073ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37073ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37089ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37090ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37107ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37123ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37123ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37139ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37139ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37156ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37156ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37173ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37173ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37189ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37190ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37206ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37207ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37223ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37238ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37239ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37256ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37256ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37273ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37273ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37289ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37290ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37306ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37306ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37323ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37340ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37356ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37373ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37405ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37406ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37423ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37423ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37439ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37440ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37456ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37456ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37473ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37473ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37505ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37506ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37523ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37523ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37539ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37540ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37556ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37556ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37573ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37573ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37590ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37606ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37607ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37623ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37639ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37640ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37656ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37657ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37673ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37673ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37689ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37690ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37706ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37706ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37723ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37723ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)
+[   37756ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/api/update_state_pos:0
+[   37757ms] TypeError: Failed to fetch
+    at onMouseMove (http://localhost:8080/app.js:1105:5)

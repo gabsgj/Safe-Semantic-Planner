@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SafeSemanticPlannerDomainManifest",
+  "description": "JSON Schema specification for Safe Semantic Planner (SSP) Enterprise Domain Manifests",
+  "type": "object",
+  "required": ["domainName", "initialState", "goalState", "states", "transitions"],
+  "properties": {
+    "domainName": {
+      "type": "string",
+      "description": "Human-readable name of the enterprise domain or benchmark"
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0.0"
+    },
+    "stateSpace": {
+      "type": "object",
+      "properties": {
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "unit": { "type": "string" },
+              "range": {
+                "type": "array",
+                "items": { "type": "number" },
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        }
+      }
+    },
+    "initialState": {
+      "type": "integer",
+      "description": "State ID where the planner starts (s_I)"
+    },
+    "goalState": {
+      "type": "integer",
+      "description": "Target State ID where the planner aims to reach (s_G)"
+    },
+    "badStates": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "Array of state IDs strictly forbidden (Bad States B)"
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "embedding"],
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "embedding": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Vector coordinate in d-dimensional Cartesian space"
+          }
+        }
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "from", "to"],
+        "properties": {
+          "id": { "type": "integer" },
+          "from": { "type": "integer" },
+          "to": { "type": "integer" },
+          "cost": { "type": "number", "default": 1.0 },
+          "safety": { "type": "number", "default": 1.0 },
+          "reliability": { "type": "number", "default": 1.0 },
+          "available": { "type": "boolean", "default": true },
+          "name": { "type": "string" }
+        }
+      }
+    }
+  }
+}

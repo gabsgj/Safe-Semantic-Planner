@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safe Semantic Planner (SSP) — High-Dimensional Neuro-Symbolic Governor</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Anime.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar (Brutalist Minimal / Precision Neumorphism) -->
+    <header class="top-nav">
+      <!-- Left: Bespoke Vector Geometric Logo & Title -->
+      <div class="brand-section">
+        <div class="logo-icon-svg">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="24" height="24" rx="5" fill="#0f172a"/>
+            <path d="M7 14L14 7L21 14L14 21L7 14Z" stroke="#6366f1" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="14" cy="14" r="3" fill="#10b981"/>
+            <path d="M14 4V7M14 21V24M4 14H7M21 14H24" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <span class="brand-name">SAFE SEMANTIC PLANNER</span>
+          <span class="version-badge">v1.0 • D* LITE</span>
+        </div>
+      </div>
+
+      <!-- Center: Domain Template Selector & View Switcher -->
+      <div class="nav-center-group">
+        <div class="domain-selector-wrapper">
+          <label for="templateSelect"><i data-lucide="layers"></i></label>
+          <select id="templateSelect" class="kokonut-select">
+            <option value="0">Cartesian Safety Corridor (TC Benchmark)</option>
+            <option value="1">Microservice Resilience Mesh (E-Commerce)</option>
+            <option value="2">Hospital Emergency Triage Pipeline</option>
+            <option value="3">Banking KYC &amp; Loan Underwriting</option>
+            <option value="4">Warehouse Robotics &amp; AMR Logistics</option>
+            <option value="5">SWE-bench AI Coding Agent (Neuro-Symbolic)</option>
+          </select>
+        </div>
+
+        <div class="view-mode-selector">
+          <button class="view-btn active" data-view="canvas" title="2D Orthographic Vector Graph">
+            <i data-lucide="layout-grid"></i> <span>2D Graph</span>
+          </button>
+          <button class="view-btn" data-view="isometric" title="3D Isometric Tilt View">
+            <i data-lucide="box"></i> <span>3D Tilt</span>
+          </button>
+          <button class="view-btn" data-view="pipeline" title="Linear Trajectory Execution Pipeline">
+            <i data-lucide="git-commit"></i> <span>Pipeline</span>
+          </button>
+          <button class="view-btn" data-view="table" title="Data Matrix &amp; State Repository">
+            <i data-lucide="table"></i> <span>Data Matrix</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Action Buttons -->
+      <div class="header-actions">
+        <div class="action-btn-group">
+          <button id="importBtn" class="kokonut-btn btn-outline" title="Upload Domain Manifest Spec">
+            <i data-lucide="upload"></i> <span>Upload</span>
+          </button>
+          <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+          <button id="exportPathBtn" class="kokonut-btn btn-outline" title="Download Optimal Trajectory Path">
+            <i data-lucide="download"></i> <span>Path</span>
+          </button>
+          <button id="exportBtn" class="kokonut-btn btn-outline" title="Export Current Domain Spec">
+            <i data-lucide="save"></i> <span>Spec</span>
+          </button>
+          <button id="downloadSchemaBtn" class="kokonut-btn btn-outline" title="Download Domain JSON Schema">
+            <i data-lucide="file-code"></i>
+          </button>
+        </div>
+
+        <div class="nav-divider"></div>
+
+        <div class="action-btn-group">
+          <button id="replanBtn" class="kokonut-btn btn-primary" title="Recompute Shortest Safe Path">
+            <i data-lucide="refresh-cw"></i> <span>Replan</span>
+          </button>
+          <button id="animateAgentBtn" class="kokonut-btn btn-secondary" title="Animate Agent Traversal">
+            <i data-lucide="play"></i> <span>Animate</span>
+          </button>
+          <button id="resetDomainBtn" class="kokonut-btn btn-icon-only" title="Reset Domain">
+            <i data-lucide="rotate-ccw"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Area with Resizable Splitter -->
+    <main class="workspace-layout">
+      
+      <!-- Primary Visualizer Viewport -->
+      <section class="canvas-panel" id="primaryPanel">
+        
+        <!-- Sleek Left Vertical Tool Dock (Figma-Style, Never Overflows) -->
+        <div class="canvas-vertical-dock" id="canvasDock">
+          <button class="v-dock-btn active" data-mode="drag" title="Drag &amp; Move Nodes (Live Replan)">
+            <i data-lucide="move"></i>
+            <span class="v-tooltip">Drag State</span>
+          </button>
+          <button class="v-dock-btn" data-mode="pan" title="Pan &amp; Drag Map Canvas">
+            <i data-lucide="hand"></i>
+            <span class="v-tooltip">Pan Map</span>
+          </button>
+          <button class="v-dock-btn" data-mode="inspect-vector" title="Compare 2 States in Vector Space">
+            <i data-lucide="scan-line"></i>
+            <span class="v-tooltip">2-State Compare</span>
+          </button>
+
+          <div class="v-dock-divider"></div>
+
+          <button class="v-dock-btn" data-mode="add-node" title="Place New State">
+            <i data-lucide="plus-circle"></i>
+            <span class="v-tooltip">Add State</span>
+          </button>
+          <button class="v-dock-btn" data-mode="add-edge" title="Connect Directed Edge">
+            <i data-lucide="git-branch"></i>
+            <span class="v-tooltip">Add Edge</span>
+          </button>
+          <button class="v-dock-btn" data-mode="edit" title="Edit Node / Edge">
+            <i data-lucide="edit-3"></i>
+            <span class="v-tooltip">Edit Properties</span>
+          </button>
+          <button class="v-dock-btn" data-mode="delete" title="Delete State / Edge">
+            <i data-lucide="trash-2"></i>
+            <span class="v-tooltip">Delete</span>
+          </button>
+
+          <div class="v-dock-divider"></div>
+
+          <button class="v-dock-btn" data-mode="toggle-hazard" title="Toggle Bad State Quarantine">
+            <i data-lucide="shield-alert"></i>
+            <span class="v-tooltip">Toggle Hazard</span>
+          </button>
+          <button class="v-dock-btn" data-mode="toggle-edge" title="Sever / Restore Transition">
+            <i data-lucide="scissors"></i>
+            <span class="v-tooltip">Sever Edge</span>
+          </button>
+          <button class="v-dock-btn" data-mode="set-start" title="Set as Start State">
+            <i data-lucide="map-pin"></i>
+            <span class="v-tooltip">Set Start</span>
+          </button>
+          <button class="v-dock-btn" data-mode="set-goal" title="Set as Goal Destination">
+            <i data-lucide="target"></i>
+            <span class="v-tooltip">Set Goal</span>
+          </button>
+        </div>
+
+        <!-- 3D Tilt & Isometric Controls Bar (Visible in 3D Mode) -->
+        <div class="isometric-controls-bar" id="isometricControls" style="display: none;">
+          <div class="iso-control-header">
+            <i data-lucide="box"></i> <span>3D Camera</span>
+            <button id="resetTiltBtn" class="mini-icon-btn" title="Reset Camera"><i data-lucide="rotate-ccw"></i></button>
+          </div>
+          <div class="iso-slider-row">
+            <label>Pitch <span id="valPitch">45°</span></label>
+            <input type="range" id="sliderPitch" min="15" max="80" value="45" class="mini-slider">
+          </div>
+          <div class="iso-slider-row">
+            <label>Yaw <span id="valYaw">35°</span></label>
+            <input type="range" id="sliderYaw" min="-75" max="75" value="35" class="mini-slider">
+          </div>
+          <div class="iso-slider-row">
+            <label>Z-Height</label>
+            <select id="selectZDimension" class="mini-select">
+              <option value="cost">Traversal Cost</option>
+              <option value="clearance">Hazard Clearance</option>
+              <option value="dim3">Dimension 3</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Canvas Viewport -->
+        <div class="canvas-viewport" id="canvasViewport">
+          <canvas id="plannerCanvas"></canvas>
+          
+          <!-- Bottom-Left Status & Mode Indicator -->
+          <div class="canvas-bottom-left-bar">
+            <div class="canvas-mode-pill" id="modeBanner">
+              <span class="mode-dot"></span>
+              <span id="modeBannerText">Drag &amp; Move Nodes</span>
+            </div>
+            <!-- Collapsible Legend Trigger -->
+            <button class="legend-toggle-btn" id="legendToggleBtn" title="Toggle Legend">
+              <i data-lucide="info"></i> <span>Legend</span>
+            </button>
+          </div>
+
+          <!-- Interactive Legend Overlay -->
+          <div class="canvas-legend" id="canvasLegend" style="display: none;">
+            <div class="legend-item"><span class="legend-dot dot-start"></span> Start State (S)</div>
+            <div class="legend-item"><span class="legend-dot dot-goal"></span> Goal State (G)</div>
+            <div class="legend-item"><span class="legend-dot dot-path"></span> Optimal Path</div>
+            <div class="legend-item"><span class="legend-dot dot-inspect-a"></span> Inspected State A</div>
+            <div class="legend-item"><span class="legend-dot dot-inspect-b"></span> Inspected State B</div>
+            <div class="legend-item"><span class="legend-dot dot-hazard"></span> Bad State (Hazard)</div>
+          </div>
+
+          <!-- Bottom-Right Navigation & Projection Dock -->
+          <div class="canvas-bottom-right-dock">
+            <div class="projection-picker-group">
+              <label><i data-lucide="compass"></i> Proj:</label>
+              <select id="projAxisX" class="mini-select-dock" title="Projection X-Axis"><option value="0">Dim 1 (X)</option></select>
+              <span class="proj-sep">&times;</span>
+              <select id="projAxisY" class="mini-select-dock" title="Projection Y-Axis"><option value="1">Dim 2 (Y)</option></select>
+            </div>
+
+            <div class="dock-sep"></div>
+
+            <div class="zoom-controls-group">
+              <button id="zoomOutBtn" class="dock-mini-btn" title="Zoom Out"><i data-lucide="zoom-out"></i></button>
+              <span class="zoom-level-pill" id="zoomLevelText" title="Click to Auto-Fit">100%</span>
+              <button id="zoomInBtn" class="dock-mini-btn" title="Zoom In"><i data-lucide="zoom-in"></i></button>
+              <button id="fitViewBtn" class="dock-mini-btn" title="Auto-Fit to Viewport"><i data-lucide="maximize"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Pipeline / Linear Flow View -->
+        <div class="pipeline-viewport" id="pipelineViewport" style="display: none;">
+          <div class="pipeline-header">
+            <div class="pipeline-title-group">
+              <h3><i data-lucide="git-commit"></i> Linear Trajectory Flow Pipeline</h3>
+              <p>Step-by-step state transition graph with vector coordinates, local clearance, and API tool dispatch metadata.</p>
+            </div>
+            <span class="pipeline-badge" id="pipelineBadge">0 Steps</span>
+          </div>
+          <div class="pipeline-track" id="pipelineTrack">
+            <!-- Dynamically populated step cards -->
+          </div>
+        </div>
+
+        <!-- 3. Data Matrix & State Repository Table View -->
+        <div class="table-viewport" id="tableViewport" style="display: none;">
+          <div class="table-view-header">
+            <div class="table-title-group">
+              <h3><i data-lucide="table"></i> Domain State &amp; Transition Repository</h3>
+              <p>Full inspectable tabular view of high-dimensional state vectors, spatial clearances, and directed edges.</p>
+            </div>
+            <div class="table-tabs">
+              <button class="sub-tab-btn active" data-subtab="states-table">States (<span id="tableStateCount">0</span>)</button>
+              <button class="sub-tab-btn" data-subtab="transitions-table">Transitions (<span id="tableTransCount">0</span>)</button>
+              <button class="sub-tab-btn" data-subtab="matrix-table">Clearance Matrix</button>
+            </div>
+          </div>
+          <div class="table-container" id="tableContainer">
+            <!-- Dynamically populated table -->
+          </div>
+        </div>
+
+        <!-- Rich High-Precision Hover Tooltip Overlay -->
+        <div class="rich-hover-tooltip" id="canvasTooltip" style="display: none;">
+          <!-- Dynamically populated with ID, Name, 6D Vector, D(s, B), RHS, G -->
+        </div>
+
+      </section>
+
+      <!-- Draggable Sidebar Resizer Handle -->
+      <div class="sidebar-resizer" id="sidebarResizer" title="Drag to Resize Sidebar">
+        <div class="resizer-handle-line"></div>
+      </div>
+
+      <!-- Right: Structured Sidebar with Segmented Tabs -->
+      <aside class="sidebar-panel" id="sidebarPanel">
+        
+        <!-- Live Status Hero Card -->
+        <div class="status-hero-card" id="statusHeroCard">
+          <div class="status-indicator-ring pulse-green" id="statusRing"></div>
+          <div class="status-text-group">
+            <h3 id="planStatusTitle">Optimal Safe Path Found</h3>
+            <p id="planStatusSubtitle">Guaranteed 0 Bad States Visited</p>
+          </div>
+        </div>
+
+        <!-- Segmented Tab Bar -->
+        <div class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="telemetry">
+            <i data-lucide="activity"></i> <span>Telemetry</span>
+          </button>
+          <button class="tab-btn" data-tab="inspector">
+            <i data-lucide="binary"></i> <span>2-State</span>
+          </button>
+          <button class="tab-btn" data-tab="tuning">
+            <i data-lucide="sliders"></i> <span>Tuning</span>
+          </button>
+          <button class="tab-btn" data-tab="ai">
+            <i data-lucide="sparkles"></i> <span>AI Agent</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: Telemetry & Trajectory Steps -->
+        <div class="tab-content active" id="tab-telemetry">
+          <!-- Real-Time Metrics Grid -->
+          <div class="metrics-grid">
+            <div class="stat-card">
+              <div class="stat-icon icon-indigo"><i data-lucide="zap"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">Replan Latency</span>
+                <div class="stat-value" id="metricTime">3.4 <small>µs</small></div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-emerald"><i data-lucide="trending-down"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">Total Cost</span>
+                <div class="stat-value" id="metricCost">8.00</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-amber"><i data-lucide="shield"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">Min Clearance</span>
+                <div class="stat-value" id="metricClearance">1.41</div>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon icon-blue"><i data-lucide="check-circle-2"></i></div>
+              <div class="stat-content">
+                <span class="stat-label">Reliability SLA</span>
+                <div class="stat-value" id="metricReliability">96.1%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-Objective Score Bar -->
+          <div class="score-card">
+            <div class="score-header">
+              <span>Objective Score: αG − βC + γD + δR</span>
+              <strong id="metricScore">101.4</strong>
+            </div>
+            <div class="score-progress-bg">
+              <div class="score-progress-bar" id="scoreBar" style="width: 85%;"></div>
+            </div>
+          </div>
+
+          <!-- Trajectory Sequence Steps -->
+          <div class="trajectory-card">
+            <div class="trajectory-header">
+              <h3><i data-lucide="list-ordered"></i> Trajectory Steps</h3>
+              <span class="badge-steps" id="stepCountBadge">4 states</span>
+            </div>
+            <div class="trajectory-list" id="trajectoryList">
+              <!-- Dynamically populated steps -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: 2-State Vector Space Inspector -->
+        <div class="tab-content" id="tab-inspector">
+          <div class="vector-compare-card">
+            <div class="vector-compare-header">
+              <h3><i data-lucide="scan-line"></i> Vector Comparison</h3>
+              <span class="badge-compare" id="compareBadge">Select 2 States</span>
+            </div>
+
+            <!-- Direct Dropdown Pickers for State A & State B -->
+            <div class="vector-picker-row">
+              <div class="picker-group">
+                <label for="selectStateA"><span class="picker-dot dot-a"></span> State A:</label>
+                <select id="selectStateA" class="form-input mini-picker">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="picker-group">
+                <label for="selectStateB"><span class="picker-dot dot-b"></span> State B:</label>
+                <select id="selectStateB" class="form-input mini-picker">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <div class="vector-compare-body" id="vectorCompareBody">
+              <p class="empty-hint">Use the dropdowns above or click two states on the canvas in <strong>"2-State"</strong> mode to compare their vector space coordinates, Euclidean clearance distance, cosine similarity, and coordinate shifts.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Objective Weights & Algorithm Tuning -->
+        <div class="tab-content" id="tab-tuning">
+          <div class="settings-card">
+            <div class="settings-header">
+              <h3><i data-lucide="sliders"></i> Objective Weights &amp; Tuning</h3>
+            </div>
+            
+            <!-- Quick Presets -->
+            <div class="preset-buttons-row">
+              <button class="preset-chip" id="presetSafety">Safety First</button>
+              <button class="preset-chip" id="presetCost">Min Cost</button>
+              <button class="preset-chip" id="presetReliability">High SLA</button>
+              <button class="preset-chip" id="presetBalanced">Balanced</button>
+            </div>
+
+            <div class="settings-body">
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Goal Reward (α)</span>
+                  <span class="slider-val" id="valAlpha">100.0</span>
+                </div>
+                <input type="range" id="sliderAlpha" min="10" max="200" step="5" value="100">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Cost Penalty (β)</span>
+                  <span class="slider-val" id="valBeta">1.0</span>
+                </div>
+                <input type="range" id="sliderBeta" min="0.1" max="10.0" step="0.1" value="1.0">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Safety Clearance (γ)</span>
+                  <span class="slider-val" id="valGamma">5.0</span>
+                </div>
+                <input type="range" id="sliderGamma" min="0.0" max="25.0" step="0.5" value="5.0">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Reliability Weight (δ)</span>
+                  <span class="slider-val" id="valDelta">2.0</span>
+                </div>
+                <input type="range" id="sliderDelta" min="0.0" max="15.0" step="0.5" value="2.0">
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-label-row">
+                  <span>Safety Margin Radius (R)</span>
+                  <span class="slider-val" id="valMargin">1.5</span>
+                </div>
+                <input type="range" id="sliderMargin" min="0.0" max="4.0" step="0.1" value="1.5">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Neuro-Symbolic AI Agent Assistant -->
+        <div class="tab-content" id="tab-ai">
+          <div class="ai-assistant-card">
+            <div class="ai-header">
+              <h3><i data-lucide="sparkles"></i> Neuro-Symbolic NLP</h3>
+              <span class="badge-ai" id="aiStatusBadge">64-D Continuous</span>
+            </div>
+
+            <!-- Prompt Input Bar -->
+            <div class="ai-input-wrapper">
+              <input type="text" id="nlpQueryInput" class="ai-input" placeholder="e.g. Find safe route to destination avoiding all hazards..." />
+              <button id="nlpSendBtn" class="ai-send-btn" title="Execute NLP Command">
+                <i data-lucide="send"></i>
+              </button>
+            </div>
+
+            <!-- Quick Suggestion Prompt Pills -->
+            <div class="ai-quick-pills">
+              <button class="prompt-pill" data-prompt="Find safe route to destination avoiding all quarantined hazards">
+                <i data-lucide="shield-check"></i> <span>Safe Route</span>
+              </button>
+              <button class="prompt-pill" data-prompt="Sever stripe payment API edge 102 to trigger dynamic failover">
+                <i data-lucide="scissors"></i> <span>Sever Edge</span>
+              </button>
+              <button class="prompt-pill" data-prompt="Quarantine node 2 as an active security hazard">
+                <i data-lucide="shield-alert"></i> <span>Quarantine</span>
+              </button>
+              <button class="prompt-pill" data-prompt="Prioritize safety clearance over cost and latency">
+                <i data-lucide="sliders"></i> <span>Prioritize Safety</span>
+              </button>
+              <button class="prompt-pill" data-prompt="Explain why this trajectory was chosen">
+                <i data-lucide="help-circle"></i> <span>Explain Rationale</span>
+              </button>
+            </div>
+
+            <!-- AI Response & Neuro-Symbolic Explanation Card -->
+            <div class="ai-response-container" id="aiResponseContainer">
+              <div class="ai-empty-state" id="aiEmptyState">
+                <i data-lucide="cpu"></i>
+                <p>Type a natural language instruction or select a prompt above. The local 64-D continuous embedding engine parses intent, solves LTL constraints, and executes sub-microsecond D* Lite replanning.</p>
+              </div>
+
+              <div class="ai-result-view" id="aiResultView" style="display: none;">
+                <div class="ai-intent-row">
+                  <span class="intent-tag" id="aiIntentTag">PLAN_ROUTE</span>
+                  <span class="confidence-tag" id="aiConfidenceTag">95.0% Match</span>
+                </div>
+
+                <div class="ai-explanation-bubble">
+                  <p id="aiExplanationText"></p>
+                </div>
+
+                <div class="ai-telemetry-row">
+                  <div class="telemetry-pill">
+                    <span>Resolved Start</span>
+                    <strong id="aiStartPill">-</strong>
+                  </div>
+                  <div class="telemetry-pill">
+                    <span>Resolved Goal</span>
+                    <strong id="aiGoalPill">-</strong>
+                  </div>
+                  <div class="telemetry-pill">
+                    <span>Replan SLA</span>
+                    <strong id="aiReplanPill">-</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </aside>
+    </main>
+
+    <!-- Floating Edit Modal Dialog -->
+    <div class="modal-backdrop" id="editModalBackdrop" style="display: none;">
+      <div class="kokonut-modal" id="editModal">
+        <div class="modal-header">
+          <h3 id="modalTitle">Edit Node Properties</h3>
+          <button class="modal-close-btn" id="modalCloseBtn"><i data-lucide="x"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Dynamic form fields -->
+        </div>
+        <div class="modal-footer">
+          <button class="kokonut-btn btn-outline" id="modalCancelBtn">Cancel</button>
+          <button class="kokonut-btn btn-primary" id="modalSaveBtn">Save &amp; Replan</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e9]:
+      - heading "Safe Semantic Planner" [level=1] [ref=e10]
+      - text: v1.0 • D* Lite Engine
+    - generic [ref=e11]:
+      - generic [ref=e12]: "Domain:"
+      - combobox "Domain:" [ref=e17] [cursor=pointer]:
+        - option "Cartesian Safety Corridor (TC Benchmark)" [selected]
+        - option "Microservice Resilience Mesh (E-Commerce)"
+        - option "Hospital Emergency Triage Pipeline"
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - button "Schema" [ref=e20] [cursor=pointer]
+        - button "Upload" [ref=e27] [cursor=pointer]
+        - button "Path" [ref=e32] [cursor=pointer]
+        - button "Spec" [ref=e37] [cursor=pointer]
+      - generic [ref=e44]:
+        - button "Replan" [ref=e45] [cursor=pointer]
+        - button "Animate" [ref=e52] [cursor=pointer]
+        - button "Reset Current Domain" [ref=e56] [cursor=pointer]
+  - main [ref=e60]:
+    - generic [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - button "Drag" [ref=e64] [cursor=pointer]
+          - button "2-State Inspect" [ref=e71] [cursor=pointer]
+        - generic [ref=e78]:
+          - button "+ Node" [ref=e79] [cursor=pointer]
+          - button "+ Edge" [ref=e83] [cursor=pointer]
+          - button "Edit" [ref=e89] [cursor=pointer]
+          - button "Delete" [ref=e93] [cursor=pointer]
+        - generic [ref=e98]:
+          - button "Quarantine" [ref=e99] [cursor=pointer]
+          - button "Sever" [ref=e103] [cursor=pointer]
+          - button "Start" [ref=e111] [cursor=pointer]
+          - button "Goal" [ref=e116] [cursor=pointer]
+        - generic [ref=e122]:
+          - button "Zoom In" [ref=e123] [cursor=pointer]
+          - button "Zoom Out" [ref=e127] [cursor=pointer]
+          - button "Fit View" [ref=e131] [cursor=pointer]
+      - generic: "Mode: Drag & Move Nodes (Live D* Lite Replan)"
+      - generic [ref=e137]:
+        - generic [ref=e138]: "2D Projection:"
+        - generic [ref=e142]:
+          - text: "X:"
+          - combobox "X:" [ref=e143]:
+            - option "Dim 1 (X)" [selected]
+            - option "Dim 2 (Y)"
+        - generic [ref=e144]:
+          - text: "Y:"
+          - combobox "Y:" [ref=e145]:
+            - option "Dim 1 (X)"
+            - option "Dim 2 (Y)" [selected]
+      - generic [ref=e146]:
+        - generic:
+          - generic: Start State ($s_I$)
+          - generic: Goal State ($s_G$)
+          - generic: Optimal Path
+          - generic: Inspected State A
+          - generic: Inspected State B
+          - generic: Bad State ($B$)
+    - complementary [ref=e148]:
+      - generic [ref=e151]:
+        - heading "Optimal Safe Path Found" [level=3] [ref=e152]
+        - paragraph [ref=e153]: Guaranteed 0 Bad States Visited • 3 Nodes Explored
+      - generic [ref=e154]:
+        - button "Telemetry" [ref=e155] [cursor=pointer]
+        - button "2-State Inspect" [ref=e159] [cursor=pointer]
+        - button "Tuning" [ref=e166] [cursor=pointer]
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - generic [ref=e175]:
+            - generic [ref=e176]: Replan Time
+            - generic [ref=e177]: 3.4 µs
+          - generic [ref=e183]:
+            - generic [ref=e184]: Total Cost ($C$)
+            - generic [ref=e185]: "8.00"
+          - generic [ref=e190]:
+            - generic [ref=e191]: Min Clearance ($D$)
+            - generic [ref=e192]: "1.41"
+          - generic [ref=e198]:
+            - generic [ref=e199]: Reliability ($R$)
+            - generic [ref=e200]: 96.1%
+        - generic [ref=e202]:
+          - generic [ref=e203]: "Score: $\\alpha G - \\beta C + \\gamma D + \\delta R$"
+          - strong [ref=e204]: "101.4"
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - heading "Trajectory Steps" [level=3] [ref=e209]
+            - generic [ref=e213]: 3 states (2 APIs)
+          - generic [ref=e214]:
+            - generic [ref=e215]:
+              - generic [ref=e216]:
+                - generic [ref=e217]: "1"
+                - generic [ref=e218]: Ambulance_Arrival
+              - generic [ref=e219]: Start
+            - generic [ref=e220]:
+              - generic [ref=e221]:
+                - generic [ref=e222]: "2"
+                - generic [ref=e223]: Surgical_Suite_OT1
+              - generic [ref=e224]: "[6.0, 6.0]"
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: "3"
+                - generic [ref=e228]: Patient_Stabilized
+              - generic [ref=e229]: Goal

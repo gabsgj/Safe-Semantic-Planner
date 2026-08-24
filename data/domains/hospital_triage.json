@@ -1,0 +1,36 @@
+{
+  "$schema": "../../web/schema.json",
+  "domainName": "Hospital Emergency Triage Pipeline",
+  "version": "1.0.0",
+  "stateSpace": {
+    "dimensions": [
+      { "name": "Acuity_Level", "unit": "1-5", "range": [1, 5] },
+      { "name": "TimeToCare_min", "unit": "min", "range": [0, 120] },
+      { "name": "InfectionRisk", "unit": "index", "range": [0, 1] },
+      { "name": "StaffLoad_pct", "unit": "%", "range": [0, 100] },
+      { "name": "Sterility_Level", "unit": "1-5", "range": [1, 5] }
+    ]
+  },
+  "initialState": 0,
+  "goalState": 6,
+  "badStates": [3],
+  "states": [
+    { "id": 0, "embedding": [1.0, 4.0, 0.10, 30.0, 3.0], "name": "Ambulance_Arrival_Bay" },
+    { "id": 1, "embedding": [3.0, 2.0, 0.20, 50.0, 4.0], "name": "Rapid_Triage_Assessment" },
+    { "id": 2, "embedding": [3.0, 6.0, 0.05, 75.0, 5.0], "name": "Resuscitation_Trauma_OT1" },
+    { "id": 3, "embedding": [5.0, 2.0, 0.90, 100.0, 1.0], "name": "Overcrowded_ICU_Overflow_Hazard" },
+    { "id": 4, "embedding": [5.0, 6.0, 0.10, 60.0, 5.0], "name": "Emergency_Surgery_Suite_OT2" },
+    { "id": 5, "embedding": [7.0, 4.0, 0.05, 40.0, 5.0], "name": "Sterile_StepDown_Unit" },
+    { "id": 6, "embedding": [8.5, 4.0, 0.01, 20.0, 5.0], "name": "Patient_Stabilized_Goal" }
+  ],
+  "transitions": [
+    { "id": 101, "from": 0, "to": 1, "cost": 5.0, "safety": 0.95, "reliability": 0.980, "available": true, "name": "Standard_Triage_Intake" },
+    { "id": 102, "from": 0, "to": 2, "cost": 2.0, "safety": 1.00, "reliability": 0.990, "available": true, "name": "Code_Red_Direct_Trauma" },
+    { "id": 103, "from": 1, "to": 3, "cost": 20.0, "safety": 0.10, "reliability": 0.600, "available": true, "name": "Overflow_ICU_Admission_Risky" },
+    { "id": 104, "from": 1, "to": 4, "cost": 15.0, "safety": 0.98, "reliability": 0.990, "available": true, "name": "Prep_Emergency_Surgery" },
+    { "id": 105, "from": 2, "to": 4, "cost": 6.0, "safety": 1.00, "reliability": 0.990, "available": true, "name": "Transfer_to_Surgery_Suite" },
+    { "id": 106, "from": 3, "to": 5, "cost": 35.0, "safety": 0.20, "reliability": 0.700, "available": true, "name": "Transfer_from_Overflow" },
+    { "id": 107, "from": 4, "to": 5, "cost": 12.0, "safety": 1.00, "reliability": 0.990, "available": true, "name": "Post_Op_Sterile_Transfer" },
+    { "id": 108, "from": 5, "to": 6, "cost": 8.0, "safety": 1.00, "reliability": 0.990, "available": true, "name": "Final_Clinical_Discharge" }
+  ]
+}

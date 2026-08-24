@@ -1,0 +1,68 @@
+{
+  "domainName": "Cartesian Safety Corridor (TC Benchmark)",
+  "timestamp": "2026-08-24T11:14:19.072Z",
+  "planningResult": {
+    "cumulativeReliability": 0.9702989999999999,
+    "exploredStatesCount": 6,
+    "message": "Optimal trajectory generated successfully",
+    "minimumSafetyDistance": 2.692582403567252,
+    "planningTimeMicroseconds": 15.833,
+    "safetyScore": 106.11351001783626,
+    "statePath": [
+      0,
+      3,
+      4,
+      6
+    ],
+    "success": true,
+    "totalCost": 9.29,
+    "transitionPath": [
+      201,
+      202,
+      203
+    ],
+    "wasReplanned": false
+  },
+  "stepSequence": [
+    {
+      "step": 1,
+      "stateId": 0,
+      "stateName": "Start_S0",
+      "embedding": [
+        1,
+        4
+      ],
+      "actionTaken": "Edge_S0_to_H3"
+    },
+    {
+      "step": 2,
+      "stateId": 3,
+      "stateName": "Safe_Highland_1",
+      "embedding": [
+        0.9571428571428573,
+        6.728571428571429
+      ],
+      "actionTaken": "Edge_H3_to_H4"
+    },
+    {
+      "step": 3,
+      "stateId": 4,
+      "stateName": "Safe_Highland_2",
+      "embedding": [
+        5,
+        6
+      ],
+      "actionTaken": "Edge_H4_to_Goal"
+    },
+    {
+      "step": 4,
+      "stateId": 6,
+      "stateName": "Goal_Terminal",
+      "embedding": [
+        9,
+        4
+      ],
+      "actionTaken": "GOAL_REACHED"
+    }
+  ]
+}

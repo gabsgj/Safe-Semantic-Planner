@@ -1,0 +1,38 @@
+{
+  "$schema": "../../web/schema.json",
+  "domainName": "Microservice Resilience Mesh",
+  "version": "1.0.0",
+  "stateSpace": {
+    "dimensions": [
+      { "name": "Latency_ms", "unit": "ms", "range": [0, 500] },
+      { "name": "ErrorRate_pct", "unit": "%", "range": [0, 100] },
+      { "name": "CPULoad_pct", "unit": "%", "range": [0, 100] },
+      { "name": "Memory_pct", "unit": "%", "range": [0, 100] },
+      { "name": "SecurityTier", "unit": "tier", "range": [1, 5] }
+    ]
+  },
+  "initialState": 0,
+  "goalState": 7,
+  "badStates": [4],
+  "states": [
+    { "id": 0, "embedding": [1.0, 1.0, 15.0, 20.0, 5.0], "name": "API_Gateway_Ingress" },
+    { "id": 1, "embedding": [2.5, 1.5, 30.0, 35.0, 5.0], "name": "Auth_OAuth2_TokenService" },
+    { "id": 2, "embedding": [4.0, 2.0, 45.0, 50.0, 4.0], "name": "Stripe_Fast_Payment" },
+    { "id": 3, "embedding": [4.0, 4.0, 60.0, 55.0, 5.0], "name": "Escrow_Banking_Backup" },
+    { "id": 4, "embedding": [5.5, 1.5, 85.0, 90.0, 1.0], "name": "Legacy_Fraud_Scanner_Vulnerable" },
+    { "id": 5, "embedding": [5.5, 3.5, 25.0, 30.0, 4.0], "name": "Modern_AI_Fraud_Detector" },
+    { "id": 6, "embedding": [7.0, 2.5, 40.0, 45.0, 5.0], "name": "Inventory_Ledger_Commit" },
+    { "id": 7, "embedding": [8.5, 2.0, 20.0, 25.0, 5.0], "name": "Order_Confirmed_Terminal" }
+  ],
+  "transitions": [
+    { "id": 101, "from": 0, "to": 1, "cost": 12.0, "safety": 1.0, "reliability": 0.999, "available": true, "name": "POST /oauth/token" },
+    { "id": 102, "from": 1, "to": 2, "cost": 45.0, "safety": 0.9, "reliability": 0.995, "available": true, "name": "POST /stripe/charge" },
+    { "id": 103, "from": 1, "to": 3, "cost": 95.0, "safety": 1.0, "reliability": 0.999, "available": true, "name": "POST /escrow/wire" },
+    { "id": 104, "from": 2, "to": 4, "cost": 30.0, "safety": 0.1, "reliability": 0.700, "available": true, "name": "POST /fraud/legacy_inspect" },
+    { "id": 105, "from": 2, "to": 5, "cost": 25.0, "safety": 1.0, "reliability": 0.998, "available": true, "name": "POST /fraud/ai_verify" },
+    { "id": 106, "from": 3, "to": 5, "cost": 20.0, "safety": 1.0, "reliability": 0.999, "available": true, "name": "POST /fraud/ai_verify_escrow" },
+    { "id": 107, "from": 4, "to": 6, "cost": 40.0, "safety": 0.1, "reliability": 0.750, "available": true, "name": "POST /inventory/reserve_risky" },
+    { "id": 108, "from": 5, "to": 6, "cost": 15.0, "safety": 1.0, "reliability": 0.999, "available": true, "name": "POST /inventory/reserve_secure" },
+    { "id": 109, "from": 6, "to": 7, "cost": 10.0, "safety": 1.0, "reliability": 0.999, "available": true, "name": "POST /order/finalize" }
+  ]
+}

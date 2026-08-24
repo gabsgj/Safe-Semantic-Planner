@@ -1,0 +1,106 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e11]:
+      - generic [ref=e12]: SAFE SEMANTIC PLANNER
+      - generic [ref=e13]: v1.0 • D* LITE
+    - generic [ref=e14]:
+      - combobox [ref=e21] [cursor=pointer]:
+        - option "Cartesian Safety Corridor (TC Benchmark)"
+        - option "Microservice Resilience Mesh (E-Commerce)"
+        - option "Hospital Emergency Triage Pipeline" [selected]
+        - option "Banking KYC & Loan Underwriting"
+        - option "Warehouse Robotics & AMR Logistics"
+        - option "SWE-bench AI Coding Agent (Neuro-Symbolic)"
+      - generic [ref=e22]:
+        - button "2D Graph" [ref=e23] [cursor=pointer]
+        - button "3D Tilt" [ref=e30] [cursor=pointer]
+        - button "Pipeline" [ref=e35] [cursor=pointer]
+        - button "Data Matrix" [ref=e39] [cursor=pointer]
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - button "Upload" [ref=e45] [cursor=pointer]
+        - button "Path" [ref=e50] [cursor=pointer]
+        - button "Spec" [ref=e55] [cursor=pointer]
+        - button "Download Domain JSON Schema" [ref=e61] [cursor=pointer]
+      - generic [ref=e68]:
+        - button "Replan" [ref=e69] [cursor=pointer]
+        - button "Animate" [ref=e76] [cursor=pointer]
+        - button "Reset Domain" [ref=e80] [cursor=pointer]
+  - main [ref=e84]:
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - button "Drag State" [ref=e87] [cursor=pointer]
+        - button "2-State Compare" [ref=e93] [cursor=pointer]
+        - button "Add State" [ref=e100] [cursor=pointer]
+        - button "Add Edge" [ref=e103] [cursor=pointer]
+        - button "Edit Properties" [ref=e108] [cursor=pointer]
+        - button "Delete" [ref=e111] [cursor=pointer]
+        - button "Toggle Hazard" [ref=e116] [cursor=pointer]
+        - button "Sever Edge" [ref=e119] [cursor=pointer]
+        - button "Set Start" [ref=e126] [cursor=pointer]
+        - button "Set Goal" [ref=e130] [cursor=pointer]
+      - generic [ref=e135]:
+        - generic [ref=e137]:
+          - generic [ref=e138]: Drag & Move Nodes
+          - button "Legend" [ref=e141] [cursor=pointer]
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - generic [ref=e147]: "Proj:"
+            - combobox "Projection X-Axis" [ref=e151]:
+              - option "Dim 1 (X)" [selected]
+              - option "Dim 2 (Y)"
+            - generic [ref=e152]: ×
+            - combobox "Projection Y-Axis" [ref=e153]:
+              - option "Dim 1 (X)"
+              - option "Dim 2 (Y)" [selected]
+          - generic [ref=e155]:
+            - button "Zoom Out" [ref=e156] [cursor=pointer]
+            - generic "Click to Auto-Fit" [ref=e160] [cursor=pointer]: 116%
+            - button "Zoom In" [ref=e161] [cursor=pointer]
+            - button "Auto-Fit to Viewport" [ref=e165] [cursor=pointer]
+    - generic "Drag to Resize Sidebar" [ref=e171]
+    - complementary [ref=e173]:
+      - generic [ref=e176]:
+        - heading "Optimal Safe Path Found" [level=3] [ref=e177]
+        - paragraph [ref=e178]: Guaranteed 0 Bad States Visited • 5 Nodes Explored
+      - generic [ref=e179]:
+        - button "Telemetry" [ref=e180] [cursor=pointer]
+        - button "2-State" [ref=e184] [cursor=pointer]
+        - button "Tuning" [ref=e191] [cursor=pointer]
+        - button "AI Agent" [ref=e194] [cursor=pointer]
+      - generic [ref=e199]:
+        - generic [ref=e200]:
+          - generic [ref=e205]:
+            - generic [ref=e206]: Replan Latency
+            - generic [ref=e207]: 18.7 µs
+          - generic [ref=e213]:
+            - generic [ref=e214]: Total Cost
+            - generic [ref=e215]: "9.29"
+          - generic [ref=e220]:
+            - generic [ref=e221]: Min Clearance
+            - generic [ref=e222]: "2.69"
+          - generic [ref=e228]:
+            - generic [ref=e229]: Reliability SLA
+            - generic [ref=e230]: 97.0%
+        - generic [ref=e232]:
+          - generic [ref=e233]: "Objective Score: αG − βC + γD + δR"
+          - strong [ref=e234]: "106.1"
+        - generic [ref=e237]:
+          - generic [ref=e238]:
+            - heading "Trajectory Steps" [level=3] [ref=e239]
+            - generic [ref=e243]: 4 states (3 APIs)
+          - generic [ref=e244]:
+            - generic [ref=e245]:
+              - generic [ref=e246]: "1"
+              - generic [ref=e247]: Start_S0
+              - generic [ref=e248]: Start
+            - generic [ref=e249]:
+              - generic [ref=e250]: "2"
+              - generic [ref=e251]: Safe_Highland_1
+            - generic [ref=e252]:
+              - generic [ref=e253]: "3"
+              - generic [ref=e254]: Safe_Highland_2
+            - generic [ref=e255]:
+              - generic [ref=e256]: "4"
+              - generic [ref=e257]: Goal_Terminal
+              - generic [ref=e258]: Goal

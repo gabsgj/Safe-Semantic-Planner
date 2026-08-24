@@ -1,0 +1,23 @@
+# Build and binary artifacts
+build/
+bin/
+*.o
+*.a
+*.so
+*.dylib
+*.out
+
+# Reference folder (as requested)
+JUST A REF/
+
+# OS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDE and temporary files
+.vscode/
+.idea/
+*.swp
+*~
