@@ -99,6 +99,7 @@ Open **`http://localhost:8080`** in your browser.
 
 ## Documentation Links
 
+- 🚀 [Render Cloud Deployment Guide](docs/DEPLOYMENT.md)
 - 🎓 [The Friendly "For Dummies" Guide (D* Lite & Architecture)](docs/DUMMYS_GUIDE.md)
 - 📖 [Comprehensive User Manual & Operational Runbook](docs/USER_MANUAL.md)
 - 📐 [Academic Design Report & Mathematical Proofs](docs/DESIGN_REPORT.md)
