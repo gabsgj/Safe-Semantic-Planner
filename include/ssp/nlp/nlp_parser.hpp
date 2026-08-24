@@ -3,11 +3,13 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <algorithm>
 #include <sstream>
 #include <regex>
 #include <iomanip>
 #include <memory>
+#include <cmath>
 
 #include "ssp/nlp/semantic_embedding.hpp"
 #include "ssp/nlp/command_intent.hpp"
@@ -37,21 +39,30 @@ public:
 
         std::string lowerQuery = toLower(query);
 
-        // Check for multi-clause conditional / LTL constraints first
-        if ((lowerQuery.find(" if ") != std::string::npos || lowerQuery.find("never go") != std::string::npos || lowerQuery.find("should go through") != std::string::npos || lowerQuery.find("must pass") != std::string::npos) &&
-            (lowerQuery.find("start") != std::string::npos || lowerQuery.find("goal") != std::string::npos || lowerQuery.find("state") != std::string::npos)) {
+        // 1. Check for multi-clause conditional / LTL constraints first
+        if ((lowerQuery.find(" if ") != std::string::npos || 
+             lowerQuery.find("never go") != std::string::npos || 
+             lowerQuery.find("never visit") != std::string::npos ||
+             lowerQuery.find("should go through") != std::string::npos || 
+             lowerQuery.find("must pass") != std::string::npos || 
+             lowerQuery.find("must visit") != std::string::npos ||
+             lowerQuery.find("then go to") != std::string::npos) &&
+            (lowerQuery.find("start") != std::string::npos || 
+             lowerQuery.find("goal") != std::string::npos || 
+             lowerQuery.find("state") != std::string::npos || 
+             lowerQuery.find("node") != std::string::npos)) {
             cmd.intent = CommandIntentType::COMPLEX_CONSTRAINED_PLAN;
             cmd.confidence = 0.98;
             extractComplexConstraints(lowerQuery, problem, cmd);
             return cmd;
         }
 
-        // 1. Identify Command Intent using Semantic Similarity & Pattern Rules
+        // 2. Identify Command Intent using Pattern Rules & Semantic Similarity
         auto [intent, confidence] = classifyIntent(query, lowerQuery);
         cmd.intent = intent;
         cmd.confidence = confidence;
 
-        // 2. Extract Entities & Parameters based on Intent
+        // 3. Extract Entities & Parameters based on Intent
         switch (intent) {
             case CommandIntentType::PLAN_ROUTE:
             case CommandIntentType::SET_START:
@@ -84,6 +95,7 @@ public:
                 if (!problem.states.empty()) {
                     auto [bestStateId, bestSim] = resolveBestState(query, problem.states);
                     cmd.slots["query_target"] = std::to_string(bestStateId);
+                    (void)bestSim;
                 }
                 break;
             }
@@ -127,7 +139,7 @@ public:
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "Updated initial start state to Node #" + 
                         std::to_string(*cmd.resolvedStartId) + " (" + getStateName(problem, *cmd.resolvedStartId) + 
-                        "). Computed safe path with total cost " + std::to_string(result.totalCost) + ".";
+                        "). Computed safe path with total cost " + formatNumber(result.totalCost, 2) + ".";
                 } else {
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "Start state unchanged (#" + std::to_string(problem.initialState) + ").";
@@ -140,7 +152,7 @@ public:
                     result = planner.updateGoal(*cmd.resolvedGoalId);
                     cmd.naturalLanguageExplanation = "Updated target destination to Node #" + 
                         std::to_string(*cmd.resolvedGoalId) + " (" + getStateName(problem, *cmd.resolvedGoalId) + 
-                        "). D* Lite dynamically replanned in " + std::to_string(result.planningTimeMicroseconds) + " µs.";
+                        "). D* Lite dynamically replanned in " + formatNumber(result.planningTimeMicroseconds, 1) + " µs.";
                 } else {
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "Goal state unchanged (#" + std::to_string(problem.goalState) + ").";
@@ -156,7 +168,7 @@ public:
                     result = planner.addBadState(hid);
                     cmd.naturalLanguageExplanation = "Quarantined Node #" + std::to_string(hid) + " (" + 
                         getStateName(problem, hid) + ") as a hazardous barrier. Dynamically rerouted around hazard in " + 
-                        std::to_string(result.planningTimeMicroseconds) + " µs (Zero bad states visited).";
+                        formatNumber(result.planningTimeMicroseconds, 1) + " µs (Zero bad states visited).";
                 } else {
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "No matching hazard state found to quarantine.";
@@ -187,9 +199,9 @@ public:
                     }
                     result = planner.setEdgeAvailability(eid, false);
                     cmd.naturalLanguageExplanation = "Severed transition #" + std::to_string(eid) + 
-                        ". Dynamic failover executed in " + std::to_string(result.planningTimeMicroseconds) + 
+                        ". Dynamic failover executed in " + formatNumber(result.planningTimeMicroseconds, 1) + 
                         " µs, rerouting traffic with end-to-end reliability of " + 
-                        std::to_string(result.cumulativeReliability * 100.0) + "%.";
+                        formatNumber(result.cumulativeReliability * 100.0, 1) + "%.";
                 } else {
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "No matching transition found to sever.";
@@ -205,7 +217,7 @@ public:
                     result = planner.setEdgeAvailability(eid, true);
                     cmd.naturalLanguageExplanation = "Restored transition #" + std::to_string(eid) + 
                         ". Shortcut integrated into trajectory search in " + 
-                        std::to_string(result.planningTimeMicroseconds) + " µs.";
+                        formatNumber(result.planningTimeMicroseconds, 1) + " µs.";
                 } else {
                     result = planner.plan(problem);
                     cmd.naturalLanguageExplanation = "No matching transition found to restore.";
@@ -222,9 +234,10 @@ public:
                 
                 planner.setConfig(cfg);
                 result = planner.plan(problem);
-                cmd.naturalLanguageExplanation = "Updated objective hyperparameters (Safety Weight γ=" + 
-                    std::to_string(cfg.gamma_safety) + ", Cost Penalty β=" + std::to_string(cfg.beta_cost) + 
-                    "). Trajectory recomputed with safety score " + std::to_string(result.safetyScore) + ".";
+                cmd.naturalLanguageExplanation = "Updated objective weights (Safety Weight γ=" + 
+                    formatNumber(cfg.gamma_safety, 1) + ", Cost Penalty β=" + formatNumber(cfg.beta_cost, 1) + 
+                    ", Reliability Weight δ=" + formatNumber(cfg.delta_reliability, 1) + 
+                    "). Trajectory recomputed with safety score " + formatNumber(result.safetyScore, 1) + ".";
                 break;
             }
             case CommandIntentType::EXPLAIN_PATH: {
@@ -234,8 +247,8 @@ public:
             }
             default: {
                 result = planner.plan(problem);
-                cmd.naturalLanguageExplanation = "Executed natural language search for query: \"" + cmd.rawQuery + 
-                    "\". Computed optimal trajectory with total cost " + std::to_string(result.totalCost) + ".";
+                cmd.naturalLanguageExplanation = "Processed query: \"" + cmd.rawQuery + 
+                    "\". Computed optimal collision-free path with total cost " + formatNumber(result.totalCost, 2) + ".";
                 break;
             }
         }
@@ -249,76 +262,80 @@ private:
 
     static std::string toLower(const std::string& s) {
         std::string res = s;
-        std::transform(res.begin(), res.end(), res.begin(), [](unsigned char c){ return std::tolower(c); });
+        std::transform(res.begin(), res.end(), res.begin(), [](unsigned char c) { return std::tolower(c); });
         return res;
     }
 
-    static std::string getStateName(const core::PlanningProblem& prob, uint64_t id) {
+    static std::string formatNumber(double val, int precision) {
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(precision) << val;
+        return ss.str();
+    }
+
+    static std::string getStateName(const core::PlanningProblem& prob, uint64_t stateId) {
         for (const auto& s : prob.states) {
-            if (s.id == id) return s.name;
+            if (s.id == stateId) return s.name.empty() ? ("Node_" + std::to_string(stateId)) : s.name;
         }
-        return "Node_" + std::to_string(id);
+        return "Node_" + std::to_string(stateId);
     }
 
     void initIntentPrototypes() {
         intentPrototypes_[CommandIntentType::PLAN_ROUTE] = {
             "find safe path from start to goal",
-            "navigate from origin to destination avoiding hazards",
-            "calculate route from service A to service B",
-            "compute shortest collision free trajectory",
+            "navigate to destination avoiding hazards",
+            "calculate shortest safe route",
+            "how to reach target",
+            "take me to goal",
             "plan route to destination",
-            "route to destination avoiding quarantined hazards"
+            "find path"
         };
         intentPrototypes_[CommandIntentType::ADD_HAZARD] = {
-            "quarantine node as dangerous hazard",
-            "mark ICU overflow as infected bad state",
-            "avoid high risk vulnerable scanner obstacle",
-            "add hazard barrier to avoid collision",
-            "block dangerous region",
-            "quarantine node as an active security hazard"
+            "quarantine this state as a hazard",
+            "mark node as dangerous obstacle",
+            "block this state",
+            "add hazard barrier",
+            "avoid node"
         };
         intentPrototypes_[CommandIntentType::REMOVE_HAZARD] = {
-            "unquarantine state and remove hazard barrier",
-            "lift quarantine on node",
-            "restore dangerous node to normal",
-            "clear obstacle and allow traversal"
+            "unquarantine this state",
+            "remove hazard obstacle",
+            "unblock node",
+            "clear hazard barrier"
         };
         intentPrototypes_[CommandIntentType::DISABLE_EDGE] = {
-            "sever edge connection between services",
-            "break stripe payment api transition",
-            "disconnect route and trigger failover",
-            "disable link due to network outage",
-            "sever payment api edge to trigger dynamic failover"
+            "sever transition edge",
+            "break connection between states",
+            "disable API route",
+            "cut edge"
         };
         intentPrototypes_[CommandIntentType::ENABLE_EDGE] = {
-            "restore severed edge link",
-            "reconnect stripe payment transition",
-            "enable api connection and discover shortcut"
+            "restore broken edge",
+            "enable transition",
+            "reconnect route",
+            "fix API"
         };
         intentPrototypes_[CommandIntentType::SET_START] = {
-            "set initial start state to ambulance bay",
-            "change origin starting position to node 0",
-            "start route from triage",
-            "make A the start state"
+            "set initial start state",
+            "start from this node",
+            "change origin"
         };
         intentPrototypes_[CommandIntentType::SET_GOAL] = {
-            "set target destination goal to discharge bay",
-            "change destination to order confirmed",
-            "our new goal is patient stabilized",
-            "make G the goal state"
+            "set target goal state",
+            "destination is this node",
+            "change goal"
         };
         intentPrototypes_[CommandIntentType::TUNE_OBJECTIVES] = {
-            "prioritize safety clearance over cost",
-            "minimize latency and cost penalty",
-            "increase reliability SLA weight",
-            "tune objective weights gamma and beta",
-            "prioritize safety clearance over cost and latency"
+            "prioritize safety and clearance",
+            "prefer cheaper route",
+            "maximize reliability SLA",
+            "tune weights",
+            "safety first"
         };
         intentPrototypes_[CommandIntentType::EXPLAIN_PATH] = {
-            "why did you choose this route",
-            "explain why this trajectory is safe",
-            "give rationale for path clearance and cost",
-            "explain why this trajectory was chosen"
+            "explain current path",
+            "why is this route chosen",
+            "give rationale for trajectory",
+            "show path explanation"
         };
     }
 
@@ -326,35 +343,36 @@ private:
         const std::string& query, 
         const std::string& lower
     ) const {
-        if (lower.find("why") != std::string::npos || lower.find("explain") != std::string::npos || lower.find("rationale") != std::string::npos) {
+        // High-confidence exact keyword matching
+        if (lower.find("explain") != std::string::npos || lower.find("why") != std::string::npos || lower.find("rationale") != std::string::npos) {
             return {CommandIntentType::EXPLAIN_PATH, 0.98};
         }
-        if (lower.find("sever") != std::string::npos || lower.find("break") != std::string::npos || lower.find("cut") != std::string::npos || lower.find("disable") != std::string::npos) {
-            return {CommandIntentType::DISABLE_EDGE, 0.95};
+        if (lower.find("sever") != std::string::npos || lower.find("break edge") != std::string::npos || lower.find("disable api") != std::string::npos || lower.find("cut connection") != std::string::npos) {
+            return {CommandIntentType::DISABLE_EDGE, 0.96};
         }
-        if (lower.find("restore") != std::string::npos || lower.find("reconnect") != std::string::npos || lower.find("enable") != std::string::npos) {
-            return {CommandIntentType::ENABLE_EDGE, 0.95};
+        if (lower.find("restore edge") != std::string::npos || lower.find("enable edge") != std::string::npos || lower.find("fix api") != std::string::npos || lower.find("reconnect") != std::string::npos) {
+            return {CommandIntentType::ENABLE_EDGE, 0.96};
         }
-        if (lower.find("unquarantine") != std::string::npos || lower.find("remove hazard") != std::string::npos || lower.find("lift quarantine") != std::string::npos) {
-            return {CommandIntentType::REMOVE_HAZARD, 0.95};
+        if (lower.find("unquarantine") != std::string::npos || lower.find("remove hazard") != std::string::npos || lower.find("unblock") != std::string::npos || lower.find("clear obstacle") != std::string::npos) {
+            return {CommandIntentType::REMOVE_HAZARD, 0.96};
         }
-        if (lower.find("quarantine") != std::string::npos || lower.find("mark hazard") != std::string::npos || lower.find("add hazard") != std::string::npos || lower.find("block node") != std::string::npos) {
-            return {CommandIntentType::ADD_HAZARD, 0.95};
+        if (lower.find("quarantine") != std::string::npos || lower.find("mark hazard") != std::string::npos || lower.find("add hazard") != std::string::npos || lower.find("block node") != std::string::npos || lower.find("block state") != std::string::npos) {
+            return {CommandIntentType::ADD_HAZARD, 0.96};
         }
-        if (lower.find("prioritize safety") != std::string::npos || lower.find("increase safety") != std::string::npos || lower.find("tune") != std::string::npos || lower.find("weight") != std::string::npos || lower.find("prioritize") != std::string::npos) {
+        if (lower.find("prioritize safety") != std::string::npos || lower.find("increase safety") != std::string::npos || lower.find("safety first") != std::string::npos || lower.find("tune") != std::string::npos || lower.find("weight") != std::string::npos || lower.find("max reliability") != std::string::npos || lower.find("highest sla") != std::string::npos || lower.find("cheapest") != std::string::npos) {
             return {CommandIntentType::TUNE_OBJECTIVES, 0.95};
         }
-        if (lower.find("set start") != std::string::npos || lower.find("start from") != std::string::npos || lower.find("origin is") != std::string::npos) {
-            return {CommandIntentType::SET_START, 0.92};
+        if (lower.find("set start") != std::string::npos || lower.find("start from") != std::string::npos || lower.find("origin is") != std::string::npos || lower.find("begin at") != std::string::npos) {
+            return {CommandIntentType::SET_START, 0.94};
         }
-        if (lower.find("set goal") != std::string::npos || lower.find("destination is") != std::string::npos || lower.find("target is") != std::string::npos) {
-            return {CommandIntentType::SET_GOAL, 0.92};
+        if (lower.find("set goal") != std::string::npos || lower.find("destination is") != std::string::npos || lower.find("target is") != std::string::npos || lower.find("end at") != std::string::npos) {
+            return {CommandIntentType::SET_GOAL, 0.94};
         }
-        if (lower.find("route") != std::string::npos || lower.find("path") != std::string::npos || lower.find("navigate") != std::string::npos || lower.find("plan") != std::string::npos || lower.find("find") != std::string::npos) {
+        if (lower.find("route") != std::string::npos || lower.find("path") != std::string::npos || lower.find("navigate") != std::string::npos || lower.find("plan") != std::string::npos || lower.find("find") != std::string::npos || lower.find("go to") != std::string::npos || lower.find("take me") != std::string::npos) {
             return {CommandIntentType::PLAN_ROUTE, 0.95};
         }
 
-        // Semantic Prototype Matching
+        // Semantic Prototype Matching via 64-D continuous embeddings
         CommandIntentType bestIntent = CommandIntentType::PLAN_ROUTE;
         double bestSim = -1.0;
 
@@ -378,7 +396,7 @@ private:
         ParsedCommand& cmd
     ) const {
         // 1. Extract Start State
-        std::regex startRegex("(?:make|set|from|start\\s+at)\\s+([a-zA-Z0-9_]+?)\\s+(?:the\\s+start|as\\s+start|state)");
+        std::regex startRegex("(?:make|set|from|start\\s+at|begin\\s+at)\\s+([a-zA-Z0-9_#]+?)\\s+(?:the\\s+start|as\\s+start|state|origin)");
         std::smatch match;
         if (std::regex_search(lower, match, startRegex) && match.size() >= 2) {
             cmd.resolvedStartId = resolveBestState(match[1].str(), prob.states).first;
@@ -388,7 +406,7 @@ private:
         }
 
         // 2. Extract Goal State
-        std::regex goalRegex("(?:and\\s+)?([a-zA-Z0-9_]+?)\\s+(?:the\\s+goal|as\\s+goal|target|destination)");
+        std::regex goalRegex("(?:and\\s+)?([a-zA-Z0-9_#]+?)\\s+(?:the\\s+goal|as\\s+goal|target|destination|end)");
         if (std::regex_search(lower, match, goalRegex) && match.size() >= 2) {
             cmd.resolvedGoalId = resolveBestState(match[1].str(), prob.states).first;
             cmd.slots["goal"] = match[1].str();
@@ -397,15 +415,20 @@ private:
         }
 
         // 3. Extract Mandatory Waypoints
-        std::regex waypointRegex("(?:should\\s+go\\s+through|must\\s+visit|pass\\s+through|visit)\\s+(?:state\\s+)?([a-zA-Z0-9_]+)");
-        if (std::regex_search(lower, match, waypointRegex) && match.size() >= 2) {
-            uint64_t wpId = resolveBestState(match[1].str(), prob.states).first;
-            cmd.mustVisitWaypoints.push_back(wpId);
-            cmd.slots["waypoint"] = match[1].str();
+        std::regex waypointRegex("(?:should\\s+go\\s+through|must\\s+visit|must\\s+pass|pass\\s+through|visit|via)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)");
+        auto wpBegin = std::sregex_iterator(lower.begin(), lower.end(), waypointRegex);
+        auto wpEnd = std::sregex_iterator();
+        for (std::sregex_iterator i = wpBegin; i != wpEnd; ++i) {
+            std::smatch m = *i;
+            if (m.size() >= 2) {
+                uint64_t wpId = resolveBestState(m[1].str(), prob.states).first;
+                cmd.mustVisitWaypoints.push_back(wpId);
+                cmd.slots["waypoint_" + std::to_string(cmd.mustVisitWaypoints.size())] = m[1].str();
+            }
         }
 
-        // 4. Extract Conditional Constraints
-        std::regex condRegex("never\\s+(?:goes\\s+through|visit)\\s+(?:state\\s+)?([a-zA-Z0-9_]+)\\s+if\\s+(?:it\\s+ever\\s+goes\\s+through|visited)\\s+(?:state\\s+)?([a-zA-Z0-9_]+)");
+        // 4. Extract Conditional Constraints ("never go through X if visited Y")
+        std::regex condRegex("(?:never\\s+(?:goes\\s+through|go\\s+through|visit)|avoid)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)\\s+if\\s+(?:it\\s+ever\\s+goes\\s+through|visited|touch)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)");
         if (std::regex_search(lower, match, condRegex) && match.size() >= 3) {
             uint64_t forbiddenId = resolveBestState(match[1].str(), prob.states).first;
             uint64_t triggerId = resolveBestState(match[2].str(), prob.states).first;
@@ -420,7 +443,7 @@ private:
         const core::PlanningProblem& prob, 
         ParsedCommand& cmd
     ) const {
-        std::regex fromToRegex("from\\s+([a-zA-Z0-9_\\s]+?)\\s+to\\s+([a-zA-Z0-9_\\s]+)");
+        std::regex fromToRegex("(?:from|between)\\s+([a-zA-Z0-9_#\\s]+?)\\s+(?:to|and)\\s+([a-zA-Z0-9_#\\s]+)");
         std::smatch match;
         if (std::regex_search(lower, match, fromToRegex) && match.size() >= 3) {
             std::string fromStr = match[1].str();
@@ -429,6 +452,7 @@ private:
             size_t avoidPos = toStr.find("avoiding");
             if (avoidPos == std::string::npos) avoidPos = toStr.find("without");
             if (avoidPos == std::string::npos) avoidPos = toStr.find("bypassing");
+            if (avoidPos == std::string::npos) avoidPos = toStr.find("except");
 
             if (avoidPos != std::string::npos) {
                 std::string hazardClause = toStr.substr(avoidPos);
@@ -442,17 +466,22 @@ private:
             cmd.slots["start"] = fromStr;
             cmd.slots["goal"] = toStr;
         } else {
-            // Check direct start / goal mentions
-            cmd.resolvedStartId = prob.initialState;
-            cmd.resolvedGoalId = prob.goalState;
-            for (const auto& s : prob.states) {
-                if (lower.find(toLower(s.name)) != std::string::npos) {
-                    if (lower.find("start") != std::string::npos || lower.find("from") != std::string::npos) {
-                        cmd.resolvedStartId = s.id;
-                    } else if (lower.find("goal") != std::string::npos || lower.find("to") != std::string::npos) {
-                        cmd.resolvedGoalId = s.id;
-                    }
+            // Check direct "to <Goal>" expressions
+            std::regex toRegex("(?:to|destination\\s+is|target\\s+is|reach|take\\s+me\\s+to)\\s+([a-zA-Z0-9_#\\s]+)");
+            if (std::regex_search(lower, match, toRegex) && match.size() >= 2) {
+                std::string toStr = match[1].str();
+                size_t avoidPos = toStr.find("avoiding");
+                if (avoidPos != std::string::npos) {
+                    std::string hazardClause = toStr.substr(avoidPos);
+                    toStr = toStr.substr(0, avoidPos);
+                    cmd.resolvedHazardId = resolveBestState(hazardClause, prob.states).first;
                 }
+                cmd.resolvedGoalId = resolveBestState(toStr, prob.states).first;
+                cmd.resolvedStartId = prob.initialState;
+                cmd.slots["goal"] = toStr;
+            } else {
+                cmd.resolvedStartId = prob.initialState;
+                cmd.resolvedGoalId = prob.goalState;
             }
         }
     }
@@ -469,6 +498,7 @@ private:
             return;
         }
         auto [bestId, bestSim] = resolveBestState(lower, prob.states);
+        (void)bestSim;
         cmd.resolvedHazardId = bestId;
         cmd.slots["hazard_target"] = std::to_string(bestId);
     }
@@ -498,15 +528,23 @@ private:
     }
 
     void extractObjectiveParameters(const std::string& lower, ParsedCommand& cmd) const {
-        if (lower.find("safety") != std::string::npos || lower.find("clearance") != std::string::npos) {
-            cmd.paramUpdates["gamma"] = 15.0;
+        if (lower.find("safety") != std::string::npos || lower.find("clearance") != std::string::npos || lower.find("careful") != std::string::npos) {
+            cmd.paramUpdates["gamma"] = 20.0;
+            cmd.paramUpdates["margin"] = 2.5;
         }
         if (lower.find("cost") != std::string::npos || lower.find("cheap") != std::string::npos || lower.find("fast") != std::string::npos || lower.find("latency") != std::string::npos) {
-            cmd.paramUpdates["beta"] = 5.0;
+            cmd.paramUpdates["beta"] = 8.0;
             cmd.paramUpdates["gamma"] = 1.0;
         }
-        if (lower.find("reliability") != std::string::npos || lower.find("sla") != std::string::npos) {
-            cmd.paramUpdates["delta"] = 10.0;
+        if (lower.find("reliability") != std::string::npos || lower.find("sla") != std::string::npos || lower.find("stable") != std::string::npos) {
+            cmd.paramUpdates["delta"] = 15.0;
+        }
+        if (lower.find("balanced") != std::string::npos || lower.find("default") != std::string::npos) {
+            cmd.paramUpdates["alpha"] = 100.0;
+            cmd.paramUpdates["beta"] = 1.0;
+            cmd.paramUpdates["gamma"] = 5.0;
+            cmd.paramUpdates["delta"] = 2.0;
+            cmd.paramUpdates["margin"] = 1.5;
         }
     }
 
@@ -516,14 +554,26 @@ private:
     ) const {
         if (states.empty()) return {0, 0.0};
         uint64_t bestId = states[0].id;
-        double bestScore = -10.0;
+        double bestScore = -100.0;
 
         std::string cleanQuery = toLower(query);
         for (char& c : cleanQuery) {
             if (!std::isalnum(static_cast<unsigned char>(c))) c = ' ';
         }
         cleanQuery.erase(0, cleanQuery.find_first_not_of(" \t\n\r"));
-        cleanQuery.erase(cleanQuery.find_last_not_of(" \t\n\r") + 1);
+        if (cleanQuery.find_last_not_of(" \t\n\r") != std::string::npos) {
+            cleanQuery.erase(cleanQuery.find_last_not_of(" \t\n\r") + 1);
+        }
+
+        // Direct number extraction from query (e.g. "#30" or "node 30" or "30")
+        std::regex numExtract("(?:node|state|#)?\\s*(\\d+)");
+        std::smatch numMatch;
+        int directNum = -1;
+        if (std::regex_search(cleanQuery, numMatch, numExtract) && numMatch.size() >= 2) {
+            try {
+                directNum = std::stoi(numMatch[1].str());
+            } catch (...) {}
+        }
 
         for (const auto& s : states) {
             std::string sName = toLower(s.name);
@@ -533,21 +583,34 @@ private:
 
             double score = embeddingModel_->similarity(query, s.name);
 
-            // Number ID match (e.g. "node 2" or "2")
-            if (cleanQuery == std::to_string(s.id)) {
-                score += 15.0;
+            // Exact numeric ID match
+            if (directNum == static_cast<int>(s.id) || cleanQuery == std::to_string(s.id)) {
+                score += 25.0;
             }
 
-            // Single letter state matching (e.g. "A" -> "State A")
+            // Single letter state matching (e.g. "A" -> "State A" or "Start_S0")
             if (cleanQuery.size() == 1) {
                 if (sName.find(std::string(" ") + cleanQuery) != std::string::npos || 
                     sName.find(cleanQuery + " ") == 0 ||
                     sName == cleanQuery || 
                     std::to_string(s.id) == cleanQuery) {
-                    score += 10.0;
+                    score += 12.0;
                 }
-            } else if (!cleanQuery.empty() && (sName.find(cleanQuery) != std::string::npos || cleanQuery.find(sName) != std::string::npos)) {
-                score += 3.0;
+            } else if (!cleanQuery.empty()) {
+                if (sName.find(cleanQuery) != std::string::npos) {
+                    score += 8.0;
+                } else if (cleanQuery.find(sName) != std::string::npos) {
+                    score += 5.0;
+                }
+
+                // Keyword token overlap (e.g. "icu", "triage", "arrival", "discharge", "payment")
+                std::istringstream iss(cleanQuery);
+                std::string word;
+                while (iss >> word) {
+                    if (word.size() >= 3 && sName.find(word) != std::string::npos) {
+                        score += 3.0;
+                    }
+                }
             }
 
             if (score > bestScore) {
@@ -593,7 +656,6 @@ private:
             uint64_t mFrom = milestones[i];
             uint64_t mTo = milestones[i + 1];
 
-            // Enforce conditional prohibitions
             core::PlanningProblem segProblem = problem;
             segProblem.initialState = mFrom;
             segProblem.goalState = mTo;
@@ -664,7 +726,7 @@ private:
            << res.minimumSafetyDistance << " units, strictly avoids " << prob.badStates.size() 
            << " quarantined bad states, achieves " << std::setprecision(1) << (res.cumulativeReliability * 100.0) 
            << "% reliability SLA, and total cost of " << std::setprecision(2) << res.totalCost 
-           << " (Computed in " << res.planningTimeMicroseconds << " µs via D* Lite).";
+           << " (Computed in " << formatNumber(res.planningTimeMicroseconds, 1) << " µs via D* Lite).";
         return ss.str();
     }
 
@@ -702,7 +764,7 @@ private:
            << " states with total cost " << std::fixed << std::setprecision(2) << res.totalCost 
            << ", minimum hazard clearance of " << res.minimumSafetyDistance << " units, and "
            << std::setprecision(1) << (res.cumulativeReliability * 100.0) << "% SLA (Dynamic Execution Time: "
-           << res.planningTimeMicroseconds << " µs).";
+           << formatNumber(res.planningTimeMicroseconds, 1) << " µs).";
 
         return ss.str();
     }
