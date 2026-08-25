@@ -1,0 +1,72 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e11]:
+      - generic [ref=e12]: SAFE SEMANTIC PLANNER
+      - generic [ref=e13]: v1.0 • D* LITE
+    - generic [ref=e14]:
+      - combobox [ref=e21] [cursor=pointer]:
+        - option "Cartesian Safety Corridor (TC Benchmark)" [selected]
+        - option "Microservice Resilience Mesh (E-Commerce)"
+        - option "Hospital Emergency Triage Pipeline"
+        - option "Banking KYC & Loan Underwriting"
+        - option "Warehouse Robotics & AMR Logistics"
+        - option "SWE-bench AI Coding Agent (Neuro-Symbolic)"
+      - generic [ref=e22]:
+        - button "2D Graph" [ref=e23] [cursor=pointer]
+        - button "3D Tilt" [ref=e30] [cursor=pointer]
+        - button "Pipeline" [ref=e35] [cursor=pointer]
+        - button "Data Matrix" [ref=e39] [cursor=pointer]
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - button "Upload" [ref=e45] [cursor=pointer]
+        - button "Path" [ref=e50] [cursor=pointer]
+        - button "Spec" [ref=e55] [cursor=pointer]
+        - button "Download Domain JSON Schema" [ref=e61] [cursor=pointer]
+      - generic [ref=e68]:
+        - button "Replan" [ref=e69] [cursor=pointer]
+        - button "Animate" [ref=e76] [cursor=pointer]
+        - button "Reset Domain" [ref=e80] [cursor=pointer]
+  - main [ref=e84]:
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - button "Drag State" [ref=e87] [cursor=pointer]
+        - button "Pan Map" [ref=e93] [cursor=pointer]
+        - button "2-State Compare" [ref=e99] [cursor=pointer]
+        - button "Add State" [ref=e106] [cursor=pointer]
+        - button "Add Edge" [ref=e109] [cursor=pointer]
+        - button "Edit Properties" [ref=e114] [cursor=pointer]
+        - button "Delete" [ref=e117] [cursor=pointer]
+        - button "Toggle Hazard" [ref=e122] [cursor=pointer]
+        - button "Sever Edge" [ref=e125] [cursor=pointer]
+        - button "Set Start" [ref=e132] [cursor=pointer]
+        - button "Set Goal" [ref=e136] [cursor=pointer]
+      - generic [ref=e141]:
+        - generic [ref=e143]:
+          - generic [ref=e144]: Drag & Move Nodes
+          - button "Legend" [ref=e147] [cursor=pointer]
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]: "Proj:"
+            - combobox "Projection X-Axis" [ref=e157]:
+              - option "Dim 1 (X)" [selected]
+              - option "Dim 2 (Y)"
+            - generic [ref=e158]: ×
+            - combobox "Projection Y-Axis" [ref=e159]:
+              - option "Dim 1 (X)"
+              - option "Dim 2 (Y)" [selected]
+          - generic [ref=e161]:
+            - button "Zoom Out" [ref=e162] [cursor=pointer]
+            - generic "Click to Auto-Fit" [ref=e166] [cursor=pointer]: 116%
+            - button "Zoom In" [ref=e167] [cursor=pointer]
+            - button "Auto-Fit to Viewport" [ref=e171] [cursor=pointer]
+    - generic "Drag to Resize Sidebar" [ref=e177]
+    - complementary [ref=e179]:
+      - generic [ref=e182]:
+        - heading "Optimal Safe Path Found" [level=3] [ref=e183]
+        - paragraph [ref=e184]: Guaranteed 0 Bad States Visited • 5 Nodes Explored
+      - generic [ref=e185]:
+        - button "Telemetry" [ref=e186] [cursor=pointer]
+        - button "Constraints" [active] [ref=e190] [cursor=pointer]
+        - button "2-State" [ref=e194] [cursor=pointer]
+        - button "Tuning" [ref=e201] [cursor=pointer]
+        - button "AI Agent" [ref=e204] [cursor=pointer]

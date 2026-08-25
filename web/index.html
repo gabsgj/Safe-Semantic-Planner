@@ -290,6 +290,9 @@
           <button class="tab-btn active" data-tab="telemetry">
             <i data-lucide="activity"></i> <span>Telemetry</span>
           </button>
+          <button class="tab-btn" data-tab="constraints">
+            <i data-lucide="shield-alert"></i> <span>Constraints</span>
+          </button>
           <button class="tab-btn" data-tab="inspector">
             <i data-lucide="binary"></i> <span>2-State</span>
           </button>
@@ -357,6 +360,53 @@
             </div>
             <div class="trajectory-list" id="trajectoryList">
               <!-- Dynamically populated steps -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Manual Constraints & Hazards -->
+        <div class="tab-content" id="tab-constraints">
+          <!-- Manual Actions Bar -->
+          <div style="margin-bottom: 12px; display: flex; gap: 8px;">
+            <button class="kokonut-btn btn-primary" id="btnManualAddState" style="flex: 1;">
+              <i data-lucide="plus-circle"></i> <span>+ Add State</span>
+            </button>
+            <button class="kokonut-btn btn-secondary" id="btnManualAddEdge" style="flex: 1;">
+              <i data-lucide="git-branch"></i> <span>+ Add Transition</span>
+            </button>
+          </div>
+
+          <!-- Hazards (Quarantined Bad States B) -->
+          <div class="settings-card" style="margin-bottom: 12px;">
+            <div class="settings-header">
+              <h3><i data-lucide="shield-alert"></i> Quarantined Hazards (Bad States)</h3>
+              <span class="badge" id="hazardCountBadge">0 Hazards</span>
+            </div>
+            <div class="settings-body" style="gap: 8px;">
+              <div style="display: flex; gap: 6px;">
+                <select id="selectHazardCandidate" class="form-input" style="flex: 1;">
+                  <!-- Populated dynamically -->
+                </select>
+                <button class="kokonut-btn btn-outline" id="btnAddHazardManual">
+                  <i data-lucide="shield-alert"></i> <span>Quarantine</span>
+                </button>
+              </div>
+              <div id="hazardListContainer" style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Transitions / Severed Edges Manager -->
+          <div class="settings-card">
+            <div class="settings-header">
+              <h3><i data-lucide="scissors"></i> Transitions &amp; Severed Failovers</h3>
+              <span class="badge" id="severedCountBadge">0 Severed</span>
+            </div>
+            <div class="settings-body">
+              <div id="transitionsListContainer" style="display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto;">
+                <!-- Populated dynamically -->
+              </div>
             </div>
           </div>
         </div>

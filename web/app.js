@@ -33,7 +33,7 @@ const state = {
   projAxisY: 1,
 
   // Canvas Interaction Mode
-  currentMode: 'drag', // 'drag' | 'inspect-vector' | 'add-node' | 'add-edge' | 'edit' | 'delete' | 'toggle-hazard' | 'toggle-edge' | 'set-start' | 'set-goal'
+  currentMode: 'drag', // 'drag' | 'pan' | 'inspect-vector' | 'add-node' | 'add-edge' | 'edit' | 'delete' | 'toggle-hazard' | 'toggle-edge' | 'set-start' | 'set-goal'
   draggedNode: null,
   hoveredNode: null,
   hoveredEdge: null,
@@ -72,12 +72,23 @@ const tableViewport = document.getElementById('tableViewport');
 const isometricControls = document.getElementById('isometricControls');
 const canvasDock = document.getElementById('canvasDock');
 
+// Modal Elements
+const modalBackdrop = document.getElementById('editModalBackdrop');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+const modalSaveBtn = document.getElementById('modalSaveBtn');
+
+let currentModalAction = null;
+
 // =============================================================================
 // 1. INITIALIZATION & DATA LOADING
 // =============================================================================
 window.addEventListener('DOMContentLoaded', async () => {
   setupEventListeners();
   setupSidebarResizer();
+  setupModalHandlers();
   lucide.createIcons();
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
@@ -96,6 +107,7 @@ async function loadProblem() {
       state.config = data.config;
       updateDimensionSelectors();
       populateStatePickers();
+      updateConstraintsTab();
       autoFitView();
       await computePlan();
     }
@@ -586,6 +598,7 @@ function drawNodes(statesMap) {
     const isOptimal = optimalSet.has(s.id);
     const isInspectA = state.inspectStateA && state.inspectStateA.id === s.id;
     const isInspectB = state.inspectStateB && state.inspectStateB.id === s.id;
+    const isSelectedEdgeSource = state.selectedEdgeSource && state.selectedEdgeSource.id === s.id;
     const isHovered = state.hoveredNode && state.hoveredNode.id === s.id;
 
     ctx.save();
@@ -628,6 +641,12 @@ function drawNodes(statesMap) {
       radius = 13;
     }
 
+    if (isSelectedEdgeSource) {
+      strokeColor = '#3b82f6';
+      ringColor = 'rgba(59, 130, 246, 0.5)';
+      radius = 15;
+    }
+
     if (isInspectA) strokeColor = '#3b82f6';
     if (isInspectB) strokeColor = '#f59e0b';
 
@@ -642,7 +661,7 @@ function drawNodes(statesMap) {
     // Node Circle
     ctx.fillStyle = fillColor;
     ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = (isHovered || isInspectA || isInspectB) ? 3.0 : 2.0;
+    ctx.lineWidth = (isHovered || isInspectA || isInspectB || isSelectedEdgeSource) ? 3.0 : 2.0;
 
     ctx.beginPath();
     ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
@@ -669,7 +688,7 @@ function drawNodes(statesMap) {
     }
 
     // Smart Label Pill: Show if not crowded OR when Start/Goal/Hazard/Hovered
-    if (!isCrowded || isStart || isGoal || isBad || isHovered || isInspectA || isInspectB) {
+    if (!isCrowded || isStart || isGoal || isBad || isHovered || isInspectA || isInspectB || isSelectedEdgeSource) {
       const nodeLabel = s.name || `Node_${s.id}`;
       drawNodeLabelPill(pos.x, pos.y + radius + 10, nodeLabel, isBad);
     }
@@ -770,7 +789,7 @@ function drawVectorInspectionLine() {
 }
 
 // =============================================================================
-// 5. RICH HOVER TOOLTIP SYSTEM
+// 5. RICH HOVER TOOLTIP SYSTEM & MOUSE INTERACTION
 // =============================================================================
 function handleCanvasMouseMove(e) {
   const rect = viewport.getBoundingClientRect();
@@ -810,11 +829,9 @@ function handleCanvasMouseMove(e) {
     return;
   }
 
-  viewport.style.cursor = (state.currentMode === 'pan') ? 'grab' : (state.hoveredNode ? 'pointer' : 'default');
-
+  // Hover detection
   if (!state.problem) return;
 
-  // 1. Check Node Hover
   let foundNode = null;
   state.problem.states.forEach(s => {
     const pos = worldToScreen(s.embedding[state.projAxisX] || 0, s.embedding[state.projAxisY] || 0, getNodeElevation(s));
@@ -824,7 +841,6 @@ function handleCanvasMouseMove(e) {
 
   state.hoveredNode = foundNode;
 
-  // 2. Check Edge Hover
   let foundEdge = null;
   if (!foundNode) {
     const statesMap = new Map();
@@ -844,7 +860,18 @@ function handleCanvasMouseMove(e) {
   }
   state.hoveredEdge = foundEdge;
 
-  // 3. Render Rich Tooltip Card
+  // Set appropriate cursor
+  if (state.currentMode === 'pan') {
+    viewport.style.cursor = 'grab';
+  } else if (state.currentMode === 'add-node') {
+    viewport.style.cursor = 'crosshair';
+  } else if (foundNode || foundEdge) {
+    viewport.style.cursor = 'pointer';
+  } else {
+    viewport.style.cursor = 'default';
+  }
+
+  // Render Tooltip
   if (foundNode) {
     renderNodeTooltip(foundNode, e.clientX, e.clientY);
   } else if (foundEdge) {
@@ -1114,6 +1141,7 @@ function setupEventListeners() {
       btn.classList.add('active');
       const tabEl = document.getElementById(`tab-${btn.dataset.tab}`);
       if (tabEl) tabEl.classList.add('active');
+      if (btn.dataset.tab === 'constraints') updateConstraintsTab();
     });
   });
 
@@ -1123,6 +1151,7 @@ function setupEventListeners() {
       document.querySelectorAll('.v-dock-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       state.currentMode = btn.dataset.mode;
+      state.selectedEdgeSource = null;
       updateModeBanner();
     });
   });
@@ -1210,6 +1239,7 @@ function setupEventListeners() {
           state.problem = templates[tmplIdx];
           updateDimensionSelectors();
           populateStatePickers();
+          updateConstraintsTab();
           autoFitView();
           await computePlan();
         }
@@ -1359,6 +1389,31 @@ function setupEventListeners() {
     updateVectorInspectorUI();
   });
 
+  // Manual Actions in Constraints Tab
+  const btnAddHazard = document.getElementById('btnAddHazardManual');
+  if (btnAddHazard) {
+    btnAddHazard.addEventListener('click', () => {
+      const sel = document.getElementById('selectHazardCandidate');
+      if (sel && sel.value) {
+        toggleHazardState(parseInt(sel.value));
+      }
+    });
+  }
+
+  const btnManualAddState = document.getElementById('btnManualAddState');
+  if (btnManualAddState) {
+    btnManualAddState.addEventListener('click', () => openAddStateModal(5.0, 5.0));
+  }
+
+  const btnManualAddEdge = document.getElementById('btnManualAddEdge');
+  if (btnManualAddEdge) {
+    btnManualAddEdge.addEventListener('click', () => {
+      const s1 = (state.problem.states && state.problem.states.length > 0) ? state.problem.states[0].id : 0;
+      const s2 = (state.problem.states && state.problem.states.length > 1) ? state.problem.states[1].id : 1;
+      openAddEdgeModal(s1, s2);
+    });
+  }
+
   // AI Agent NLP Handler
   const nlpInput = document.getElementById('nlpQueryInput');
   const nlpBtn = document.getElementById('nlpSendBtn');
@@ -1378,6 +1433,9 @@ function setupEventListeners() {
   });
 }
 
+// =============================================================================
+// 8. CANVAS MOUSE ACTIONS & DOCK DISPATCHER
+// =============================================================================
 function handleCanvasMouseDown(e) {
   const rect = viewport.getBoundingClientRect();
   const mx = e.clientX - rect.left;
@@ -1386,8 +1444,8 @@ function handleCanvasMouseDown(e) {
   state.lastMouseX = mx;
   state.lastMouseY = my;
 
-  // Middle mouse, Space pan, or pan mode
-  if (e.button === 1 || e.shiftKey || state.currentMode === 'pan' || (!state.hoveredNode && !state.hoveredEdge)) {
+  // Middle mouse, Shift pan, or explicit pan mode
+  if (e.button === 1 || e.shiftKey || state.currentMode === 'pan') {
     if (state.viewMode === 'isometric') {
       state.isRotatingIso = true;
     } else {
@@ -1397,15 +1455,113 @@ function handleCanvasMouseDown(e) {
     return;
   }
 
-  if (state.currentMode === 'drag') {
+  // 1. ADD STATE MODE (Clicks on canvas to place state)
+  if (state.currentMode === 'add-node') {
+    const worldPos = screenToWorld(mx, my);
+    openAddStateModal(worldPos.wx, worldPos.wy);
+    return;
+  }
+
+  // 2. ADD EDGE MODE (Clicks source node, then destination node)
+  if (state.currentMode === 'add-edge') {
     if (state.hoveredNode) {
-      state.draggedNode = state.hoveredNode;
-      viewport.style.cursor = 'grabbing';
+      if (!state.selectedEdgeSource) {
+        state.selectedEdgeSource = state.hoveredNode;
+        if (modeBannerText) {
+          modeBannerText.textContent = `Selected Node #${state.hoveredNode.id}. Now click destination state.`;
+        }
+      } else if (state.selectedEdgeSource.id !== state.hoveredNode.id) {
+        const fromId = state.selectedEdgeSource.id;
+        const toId = state.hoveredNode.id;
+        state.selectedEdgeSource = null;
+        updateModeBanner();
+        openAddEdgeModal(fromId, toId);
+      }
+    } else {
+      state.selectedEdgeSource = null;
+      updateModeBanner();
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 3. EDIT MODE (Clicks node or edge to edit)
+  if (state.currentMode === 'edit') {
+    if (state.hoveredNode) {
+      openEditStateModal(state.hoveredNode);
+    } else if (state.hoveredEdge) {
+      openEditEdgeModal(state.hoveredEdge);
     } else {
       state.isPanning = true;
-      viewport.style.cursor = 'grabbing';
     }
-  } else if (state.currentMode === 'inspect-vector') {
+    return;
+  }
+
+  // 4. DELETE MODE (Clicks node or edge to delete)
+  if (state.currentMode === 'delete') {
+    if (state.hoveredNode) {
+      const nid = state.hoveredNode.id;
+      if (confirm(`Delete State #${nid} (${state.hoveredNode.name || 'Unnamed'})?`)) {
+        deleteState(nid);
+      }
+    } else if (state.hoveredEdge) {
+      const eid = state.hoveredEdge.id;
+      if (confirm(`Delete Transition Edge #${eid}?`)) {
+        deleteEdge(eid);
+      }
+    } else {
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 5. TOGGLE HAZARD MODE
+  if (state.currentMode === 'toggle-hazard') {
+    if (state.hoveredNode) {
+      const nid = state.hoveredNode.id;
+      toggleHazardState(nid);
+    } else {
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 6. TOGGLE / SEVER EDGE MODE
+  if (state.currentMode === 'toggle-edge') {
+    if (state.hoveredEdge) {
+      state.hoveredEdge.available = !state.hoveredEdge.available;
+      computePlan();
+      updateConstraintsTab();
+    } else {
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 7. SET START MODE
+  if (state.currentMode === 'set-start') {
+    if (state.hoveredNode) {
+      state.problem.initialState = state.hoveredNode.id;
+      computePlan();
+    } else {
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 8. SET GOAL MODE
+  if (state.currentMode === 'set-goal') {
+    if (state.hoveredNode) {
+      state.problem.goalState = state.hoveredNode.id;
+      computePlan();
+    } else {
+      state.isPanning = true;
+    }
+    return;
+  }
+
+  // 9. 2-STATE INSPECT VECTOR MODE
+  if (state.currentMode === 'inspect-vector') {
     if (state.hoveredNode) {
       if (!state.inspectStateA || (state.inspectStateA && state.inspectStateB)) {
         state.inspectStateA = state.hoveredNode;
@@ -1415,33 +1571,28 @@ function handleCanvasMouseDown(e) {
       }
       populateStatePickers();
       updateVectorInspectorUI();
+    } else {
+      state.isPanning = true;
     }
-  } else if (state.currentMode === 'toggle-hazard') {
+    return;
+  }
+
+  // 10. DRAG STATE / PAN CANVAS MODE
+  if (state.currentMode === 'drag') {
     if (state.hoveredNode) {
-      const nid = state.hoveredNode.id;
-      const idx = (state.problem.badStates || []).indexOf(nid);
-      if (idx !== -1) {
-        state.problem.badStates.splice(idx, 1);
-      } else {
-        state.problem.badStates.push(nid);
-      }
-      computePlan();
+      state.draggedNode = state.hoveredNode;
+      viewport.style.cursor = 'grabbing';
+    } else {
+      state.isPanning = true;
+      viewport.style.cursor = 'grabbing';
     }
-  } else if (state.currentMode === 'toggle-edge') {
-    if (state.hoveredEdge) {
-      state.hoveredEdge.available = !state.hoveredEdge.available;
-      computePlan();
-    }
-  } else if (state.currentMode === 'set-start') {
-    if (state.hoveredNode) {
-      state.problem.initialState = state.hoveredNode.id;
-      computePlan();
-    }
-  } else if (state.currentMode === 'set-goal') {
-    if (state.hoveredNode) {
-      state.problem.goalState = state.hoveredNode.id;
-      computePlan();
-    }
+    return;
+  }
+
+  // Default fallback: Pan canvas on empty space
+  if (!state.hoveredNode && !state.hoveredEdge) {
+    state.isPanning = true;
+    viewport.style.cursor = 'grabbing';
   }
 }
 
@@ -1460,14 +1611,14 @@ function updateModeBanner() {
     'drag': 'Drag & Move States (Live Replan)',
     'pan': 'Pan & Drag Map Canvas',
     'inspect-vector': 'Inspect 2-State Vector Clearance',
-    'add-node': 'Click to Add State',
-    'add-edge': 'Connect Directed Edge',
-    'edit': 'Edit Node / Edge Properties',
-    'delete': 'Delete Node / Edge',
-    'toggle-hazard': 'Toggle Bad State Quarantine',
-    'toggle-edge': 'Sever / Restore Transition',
-    'set-start': 'Set as Start State',
-    'set-goal': 'Set as Goal Destination'
+    'add-node': 'Click Canvas to Place New State',
+    'add-edge': 'Click Source then Target to Connect Edge',
+    'edit': 'Click Node or Edge to Edit Properties',
+    'delete': 'Click Node or Edge to Delete',
+    'toggle-hazard': 'Click Node to Toggle Bad State Quarantine',
+    'toggle-edge': 'Click Edge to Sever / Restore Transition',
+    'set-start': 'Click Node to Set as Start State',
+    'set-goal': 'Click Node to Set as Goal Destination'
   };
   if (modeBannerText) {
     modeBannerText.textContent = modes[state.currentMode] || 'Interactive Mode';
@@ -1475,7 +1626,410 @@ function updateModeBanner() {
 }
 
 // =============================================================================
-// 8. TELEMETRY, VECTOR INSPECTOR & TUNING UI UPDATES
+// 9. MODAL MANAGEMENT & MANUAL CONSTRAINTS
+// =============================================================================
+function setupModalHandlers() {
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+  if (modalCancelBtn) modalCancelBtn.addEventListener('click', closeModal);
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+  }
+  if (modalSaveBtn) {
+    modalSaveBtn.addEventListener('click', () => {
+      if (typeof currentModalAction === 'function') {
+        currentModalAction();
+      }
+      closeModal();
+    });
+  }
+}
+
+function closeModal() {
+  if (modalBackdrop) modalBackdrop.style.display = 'none';
+  currentModalAction = null;
+}
+
+function openAddStateModal(wx = 5.0, wy = 5.0) {
+  let maxId = 0;
+  (state.problem.states || []).forEach(s => { if (s.id >= maxId) maxId = s.id + 1; });
+
+  const numDims = (state.problem.states && state.problem.states.length > 0) ? state.problem.states[0].embedding.length : 2;
+
+  let dimInputs = '';
+  for (let d = 0; d < numDims; ++d) {
+    const val = (d === state.projAxisX) ? wx : ((d === state.projAxisY) ? wy : 0.0);
+    dimInputs += `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); min-width:80px;">Dim ${d + 1} (${getDimName(d)}):</label>
+        <input type="number" step="0.01" class="form-input" id="dimInput_${d}" value="${val.toFixed(2)}" style="flex:1;">
+      </div>
+    `;
+  }
+
+  modalTitle.textContent = 'Create New State';
+  modalBody.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">State ID:</label>
+        <input type="number" class="form-input" id="newStateId" value="${maxId}">
+      </div>
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">State Name:</label>
+        <input type="text" class="form-input" id="newStateName" value="Custom_State_${maxId}">
+      </div>
+      <div style="margin-top:6px;">
+        <label style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:6px; display:block;">Embedding Coordinates (R^${numDims}):</label>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${dimInputs}
+        </div>
+      </div>
+    </div>
+  `;
+
+  currentModalAction = () => {
+    const id = parseInt(document.getElementById('newStateId').value) || maxId;
+    const name = document.getElementById('newStateName').value.trim() || `Node_${id}`;
+    const embedding = [];
+    for (let d = 0; d < numDims; ++d) {
+      const el = document.getElementById(`dimInput_${d}`);
+      embedding.push(el ? parseFloat(el.value) || 0.0 : 0.0);
+    }
+    state.problem.states.push({ id, name, embedding });
+    populateStatePickers();
+    updateConstraintsTab();
+    computePlan();
+  };
+
+  modalBackdrop.style.display = 'flex';
+  lucide.createIcons();
+}
+
+function openEditStateModal(node) {
+  const numDims = node.embedding.length;
+  let dimInputs = '';
+  for (let d = 0; d < numDims; ++d) {
+    dimInputs += `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); min-width:80px;">Dim ${d + 1} (${getDimName(d)}):</label>
+        <input type="number" step="0.01" class="form-input" id="dimInput_${d}" value="${(node.embedding[d] || 0).toFixed(3)}" style="flex:1;">
+      </div>
+    `;
+  }
+
+  const isBad = (state.problem.badStates || []).includes(node.id);
+  const isStart = state.problem.initialState === node.id;
+  const isGoal = state.problem.goalState === node.id;
+
+  modalTitle.textContent = `Edit State #${node.id}`;
+  modalBody.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">State Name:</label>
+        <input type="text" class="form-input" id="editStateName" value="${node.name || ''}">
+      </div>
+      <div style="display:flex; gap:12px; align-items:center; margin-top:4px;">
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:4px; cursor:pointer;">
+          <input type="checkbox" id="chkIsHazard" ${isBad ? 'checked' : ''}> Quarantined Hazard
+        </label>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:4px; cursor:pointer;">
+          <input type="radio" name="roleRadio" id="radIsStart" ${isStart ? 'checked' : ''}> Start Node
+        </label>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:4px; cursor:pointer;">
+          <input type="radio" name="roleRadio" id="radIsGoal" ${isGoal ? 'checked' : ''}> Goal Node
+        </label>
+      </div>
+      <div style="margin-top:6px;">
+        <label style="font-size:12px; font-weight:700; color:var(--text-primary); margin-bottom:6px; display:block;">Embedding Coordinates (R^${numDims}):</label>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          ${dimInputs}
+        </div>
+      </div>
+    </div>
+  `;
+
+  currentModalAction = () => {
+    node.name = document.getElementById('editStateName').value.trim() || `Node_${node.id}`;
+    for (let d = 0; d < numDims; ++d) {
+      const el = document.getElementById(`dimInput_${d}`);
+      node.embedding[d] = el ? parseFloat(el.value) || 0.0 : 0.0;
+    }
+    const chkHazard = document.getElementById('chkIsHazard').checked;
+    const radStart = document.getElementById('radIsStart').checked;
+    const radGoal = document.getElementById('radIsGoal').checked;
+
+    const bIdx = (state.problem.badStates || []).indexOf(node.id);
+    if (chkHazard && bIdx === -1) state.problem.badStates.push(node.id);
+    else if (!chkHazard && bIdx !== -1) state.problem.badStates.splice(bIdx, 1);
+
+    if (radStart) state.problem.initialState = node.id;
+    if (radGoal) state.problem.goalState = node.id;
+
+    populateStatePickers();
+    updateConstraintsTab();
+    computePlan();
+  };
+
+  modalBackdrop.style.display = 'flex';
+  lucide.createIcons();
+}
+
+function openAddEdgeModal(fromId, toId) {
+  let maxId = 0;
+  (state.problem.transitions || []).forEach(t => { if (t.id >= maxId) maxId = t.id + 1; });
+
+  const statesMap = new Map();
+  (state.problem.states || []).forEach(s => statesMap.set(s.id, s));
+  const sFrom = statesMap.get(fromId);
+  const sTo = statesMap.get(toId);
+
+  let defaultCost = 1.0;
+  if (sFrom && sTo) {
+    let sumSq = 0;
+    for (let i = 0; i < Math.max(sFrom.embedding.length, sTo.embedding.length); ++i) {
+      const diff = (sFrom.embedding[i] || 0) - (sTo.embedding[i] || 0);
+      sumSq += diff * diff;
+    }
+    defaultCost = Math.max(0.1, Math.sqrt(sumSq));
+  }
+
+  modalTitle.textContent = `Create Transition (#${fromId} &rarr; #${toId})`;
+  modalBody.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Transition Name:</label>
+        <input type="text" class="form-input" id="newEdgeName" value="Edge_${fromId}_to_${toId}">
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Base Cost:</label>
+          <input type="number" step="0.1" class="form-input" id="newEdgeCost" value="${defaultCost.toFixed(2)}">
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Reliability SLA (0.0 - 1.0):</label>
+          <input type="number" step="0.01" min="0.1" max="1.0" class="form-input" id="newEdgeReliability" value="0.99">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Safety Margin (0.0 - 1.0):</label>
+        <input type="number" step="0.05" min="0.0" max="1.0" class="form-input" id="newEdgeSafety" value="1.0">
+      </div>
+    </div>
+  `;
+
+  currentModalAction = () => {
+    const cost = parseFloat(document.getElementById('newEdgeCost').value) || defaultCost;
+    const rel = parseFloat(document.getElementById('newEdgeReliability').value) || 0.99;
+    const safety = parseFloat(document.getElementById('newEdgeSafety').value) || 1.0;
+    const name = document.getElementById('newEdgeName').value.trim() || `Edge_${fromId}_to_${toId}`;
+
+    state.problem.transitions.push({
+      id: maxId,
+      from: fromId,
+      to: toId,
+      cost: cost,
+      reliability: rel,
+      safety: safety,
+      available: true,
+      name: name
+    });
+
+    updateConstraintsTab();
+    computePlan();
+  };
+
+  modalBackdrop.style.display = 'flex';
+  lucide.createIcons();
+}
+
+function openEditEdgeModal(edge) {
+  modalTitle.textContent = `Edit Transition #${edge.id} (#${edge.from} &rarr; #${edge.to})`;
+  modalBody.innerHTML = `
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Transition Name:</label>
+        <input type="text" class="form-input" id="editEdgeName" value="${edge.name || ''}">
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Base Cost:</label>
+          <input type="number" step="0.1" class="form-input" id="editEdgeCost" value="${edge.cost.toFixed(2)}">
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Reliability SLA (0.0 - 1.0):</label>
+          <input type="number" step="0.01" min="0.1" max="1.0" class="form-input" id="editEdgeReliability" value="${edge.reliability.toFixed(3)}">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Safety Margin:</label>
+          <input type="number" step="0.05" min="0.0" max="1.0" class="form-input" id="editEdgeSafety" value="${edge.safety.toFixed(2)}">
+        </div>
+        <label style="font-size:12px; font-weight:600; color:var(--text-muted); display:flex; align-items:center; gap:6px; cursor:pointer; margin-top:14px;">
+          <input type="checkbox" id="chkEdgeAvailable" ${edge.available ? 'checked' : ''}> Transition Available
+        </label>
+      </div>
+    </div>
+  `;
+
+  currentModalAction = () => {
+    edge.name = document.getElementById('editEdgeName').value.trim() || `Edge_${edge.id}`;
+    edge.cost = parseFloat(document.getElementById('editEdgeCost').value) || edge.cost;
+    edge.reliability = parseFloat(document.getElementById('editEdgeReliability').value) || edge.reliability;
+    edge.safety = parseFloat(document.getElementById('editEdgeSafety').value) || edge.safety;
+    edge.available = document.getElementById('chkEdgeAvailable').checked;
+
+    updateConstraintsTab();
+    computePlan();
+  };
+
+  modalBackdrop.style.display = 'flex';
+  lucide.createIcons();
+}
+
+function toggleHazardState(stateId) {
+  if (!state.problem.badStates) state.problem.badStates = [];
+  const idx = state.problem.badStates.indexOf(stateId);
+  if (idx !== -1) {
+    state.problem.badStates.splice(idx, 1);
+  } else {
+    state.problem.badStates.push(stateId);
+  }
+  computePlan();
+  updateConstraintsTab();
+}
+
+function deleteState(stateId) {
+  if (!state.problem || !state.problem.states) return;
+  state.problem.states = state.problem.states.filter(s => s.id !== stateId);
+  if (state.problem.transitions) {
+    state.problem.transitions = state.problem.transitions.filter(t => t.from !== stateId && t.to !== stateId);
+  }
+  if (state.problem.badStates) {
+    state.problem.badStates = state.problem.badStates.filter(b => b !== stateId);
+  }
+  if (state.problem.initialState === stateId && state.problem.states.length > 0) {
+    state.problem.initialState = state.problem.states[0].id;
+  }
+  if (state.problem.goalState === stateId && state.problem.states.length > 0) {
+    state.problem.goalState = state.problem.states[state.problem.states.length - 1].id;
+  }
+  if (state.inspectStateA && state.inspectStateA.id === stateId) state.inspectStateA = null;
+  if (state.inspectStateB && state.inspectStateB.id === stateId) state.inspectStateB = null;
+
+  populateStatePickers();
+  updateConstraintsTab();
+  computePlan();
+}
+
+function deleteEdge(edgeId) {
+  if (!state.problem || !state.problem.transitions) return;
+  state.problem.transitions = state.problem.transitions.filter(t => t.id !== edgeId);
+  updateConstraintsTab();
+  computePlan();
+}
+
+function updateConstraintsTab() {
+  const hazardCandidateSel = document.getElementById('selectHazardCandidate');
+  const hazardListContainer = document.getElementById('hazardListContainer');
+  const hazardCountBadge = document.getElementById('hazardCountBadge');
+  const transitionsListContainer = document.getElementById('transitionsListContainer');
+  const severedCountBadge = document.getElementById('severedCountBadge');
+
+  if (!state.problem) return;
+
+  // 1. Populate Hazard Candidate Select
+  if (hazardCandidateSel) {
+    hazardCandidateSel.innerHTML = '<option value="">-- Select State to Quarantine --</option>';
+    const badSet = new Set(state.problem.badStates || []);
+    (state.problem.states || []).forEach(s => {
+      if (!badSet.has(s.id)) {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = `#${s.id}: ${s.name || 'Unnamed'}`;
+        hazardCandidateSel.appendChild(opt);
+      }
+    });
+  }
+
+  // 2. Populate Quarantined Hazards List
+  if (hazardListContainer) {
+    const statesMap = new Map();
+    (state.problem.states || []).forEach(s => statesMap.set(s.id, s));
+    const badList = state.problem.badStates || [];
+
+    if (hazardCountBadge) hazardCountBadge.textContent = `${badList.length} Hazards`;
+
+    if (badList.length === 0) {
+      hazardListContainer.innerHTML = '<p class="empty-hint">No quarantined hazards active. Select a state above to quarantine.</p>';
+    } else {
+      let html = '';
+      badList.forEach(hid => {
+        const s = statesMap.get(hid);
+        html += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; background:var(--bg-muted); border:1px solid var(--border-subtle); border-radius:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span class="tooltip-badge badge-hazard">#${hid}</span>
+              <span style="font-size:12px; font-weight:600; color:var(--text-primary);">${s ? s.name : 'Unknown'}</span>
+            </div>
+            <button class="kokonut-btn btn-outline btn-sm unquarantine-btn" data-hid="${hid}" style="padding:2px 8px; font-size:11px;">
+              Unquarantine
+            </button>
+          </div>
+        `;
+      });
+      hazardListContainer.innerHTML = html;
+
+      hazardListContainer.querySelectorAll('.unquarantine-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const hid = parseInt(btn.dataset.hid);
+          toggleHazardState(hid);
+        });
+      });
+    }
+  }
+
+  // 3. Populate Transitions / Severed Edges List
+  if (transitionsListContainer) {
+    const transitions = state.problem.transitions || [];
+    let severedCount = 0;
+    let html = '';
+
+    transitions.forEach(t => {
+      if (!t.available) severedCount++;
+      html += `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 8px; background:var(--bg-muted); border:1px solid var(--border-subtle); border-radius:4px;">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <span style="font-size:11.5px; font-weight:600; color:var(--text-primary);">${t.name || ('Edge #' + t.id)} (#${t.from} &rarr; #${t.to})</span>
+            <span style="font-size:10px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;">Cost: ${t.cost.toFixed(1)} | SLA: ${(t.reliability*100).toFixed(0)}%</span>
+          </div>
+          <button class="kokonut-btn btn-sm ${t.available ? 'btn-outline' : 'btn-danger'} toggle-edge-btn" data-tid="${t.id}" style="padding:2px 8px; font-size:11px;">
+            ${t.available ? 'Sever' : 'Restore'}
+          </button>
+        </div>
+      `;
+    });
+
+    if (severedCountBadge) severedCountBadge.textContent = `${severedCount} Severed`;
+    transitionsListContainer.innerHTML = html || '<p class="empty-hint">No transitions configured.</p>';
+
+    transitionsListContainer.querySelectorAll('.toggle-edge-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tid = parseInt(btn.dataset.tid);
+        const tr = state.problem.transitions.find(t => t.id === tid);
+        if (tr) {
+          tr.available = !tr.available;
+          computePlan();
+          updateConstraintsTab();
+        }
+      });
+    });
+  }
+}
+
+// =============================================================================
+// 10. TELEMETRY, VECTOR INSPECTOR & TUNING UI UPDATES
 // =============================================================================
 function updateUI() {
   const statusTitle = document.getElementById('planStatusTitle');
@@ -1683,7 +2237,7 @@ function setupTuningSliders() {
 }
 
 // =============================================================================
-// 9. NEURO-SYMBOLIC NLP COMMAND HANDLER
+// 11. NEURO-SYMBOLIC NLP COMMAND HANDLER
 // =============================================================================
 async function handleNlpCommand(query) {
   const emptyState = document.getElementById('aiEmptyState');
@@ -1721,6 +2275,7 @@ async function handleNlpCommand(query) {
 
       updateDimensionSelectors();
       populateStatePickers();
+      updateConstraintsTab();
       updateUI();
       triggerMetricAnimations();
       if (state.viewMode === 'pipeline') renderPipelineView();
@@ -1733,7 +2288,7 @@ async function handleNlpCommand(query) {
 }
 
 // =============================================================================
-// 10. FILE EXPORTS & IMPORTS
+// 12. FILE EXPORTS & IMPORTS
 // =============================================================================
 function downloadFile(content, fileName, contentType) {
   const blob = new Blob([content], { type: contentType });
@@ -1758,6 +2313,7 @@ function handleImportJSON(e) {
       state.problem = importedProb;
       updateDimensionSelectors();
       populateStatePickers();
+      updateConstraintsTab();
       autoFitView();
       await computePlan();
     } catch (err) {
