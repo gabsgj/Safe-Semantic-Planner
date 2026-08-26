@@ -1,172 +1,159 @@
 # Safe Semantic Planner (SSP)
 ## Comprehensive User Manual & Operational Runbook
 
-**Version**: 1.0.0  
-**Build Target**: macOS / Linux (C++17, Clang / GCC)  
-**Embedded Web Port**: `http://localhost:8080`  
+**Standard**: C++17 Header-Only Library + Single-Binary Embedded HTTP Visualizer  
+**Live Production URL**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
+**Local Visualizer URL**: `http://localhost:8080`  
 
 ---
 
-## 1. Quick Start & Build Instructions
+## 1. Prerequisites and Build Instructions
 
 ### 1.1 Prerequisites
-- C++17 compatible compiler (`clang++ >= 11.0` or `g++ >= 9.0`)
-- GNU Make or CMake (`>= 3.16`)
+- C++17 compliant compiler: Clang++ (>= 11.0) or G++ (>= 9.0)
+- Build system: GNU Make (>= 3.81) or CMake (>= 3.16)
 - Standard POSIX threads (`pthread`)
 
-### 1.2 Compiling All Binaries
-To build the complete suite of tests, CLI inspectors, benchmarks, bonus features, and the web server:
+### 1.2 Compiling All Targets
+To compile the entire suite of automated tests, CLI tools, benchmarks, and the web server:
 
 ```bash
-# Clone or navigate to the repository root
+# Clone and enter directory
 cd /Users/gabriel/Projects/SSP
 
-# Compile everything with maximum optimization (-O3)
-make all
+# Clean and compile everything with -O3 optimization
+make clean && make all
 ```
 
-The compiled binaries will be output to the `bin/` directory:
-- `bin/test_phase1`: Spatial KD-Tree & Core Interface Tests
-- `bin/test_phase2`: D\* Lite Algorithm & Replanning Tests
-- `bin/test_assignment_tc`: Assignment Test Cases TC1 through TC6
-- `bin/test_phase5`: Enterprise Multi-Domain Tests
-- `bin/test_phase6`: Advanced NLP & 64-D Semantic Embedding Tests
-- `bin/test_phase7`: AI Agent Governor & SWE-bench Tests
-- `bin/test_bonus`: Bonus Features Suite (TSP, Temporal, Knowledge Graph)
-- `bin/benchmark_main`: Stress Benchmarking Engine ($5\times 5$ to $50\times 50$ grids)
-- `bin/nlp_main`: Interactive NLP Command Line Interface
-- `bin/agent_main`: SWE-bench Comparative Agent Scoreboard
-- `bin/bonus_main`: Interactive CLI for all Bonus Features
-- `bin/ssp_server`: Embedded Single-Binary Web Visualizer
+Output binaries generated in `bin/`:
+- `bin/test_phase1`: Spatial KD-Tree, Vector Math, and JSON Serialization Test Suite
+- `bin/test_phase2`: D* Lite Search Engine & Potential Barrier Test Suite
+- `bin/test_assignment_tc`: Mandated Assignment Test Cases (TC1 through TC6)
+- `bin/test_phase5`: Enterprise Domain Templates Test Suite (Healthcare, Microservices, Banking, AMR)
+- `bin/test_phase6`: Advanced NLP & Semantic Embedding Test Suite
+- `bin/test_phase7`: SWE-bench AI Agent Governor & Backtracking Test Suite
+- `bin/test_bonus`: Bonus Features Test Suite (TSP, Temporal Windows, Knowledge Graph)
+- `bin/test_dstar_verification`: Algorithmic D* Lite Stress & Invariant Verification Suite
+- `bin/test_nlp_comprehensive`: Bidirectional & Inverted NLP Query Verification Suite
+- `bin/benchmark_main`: Synthetic Grid Benchmark Runner (5x5 to 50x50 topologies)
+- `bin/nlp_main`: Interactive Natural Language Query CLI
+- `bin/agent_main`: SWE-bench Autonomous AI Agent Scoreboard
+- `bin/bonus_main`: Interactive Bonus Topics Demonstration CLI
+- `bin/ssp_server`: Embedded Single-Binary Web Visualizer & REST Server
 
 ---
 
-## 2. Automated Test Suites & Verification Runbook
+## 2. Automated Test Runbook
 
-Run any test suite using the standardized `make` targets:
+Execute all verification test suites using standard make commands:
 
 ```bash
-# 1. Run Core Interface & Spatial KD-Tree Tests
-make test_phase1
+# Run all automated test suites
+make test
 
-# 2. Run D* Lite Search & Continuous Potential Field Tests
-make test_phase2
-
-# 3. Run Assignment Test Cases (TC1 to TC6)
-make test_assignment_tc
-
-# 4. Run Enterprise Multi-Domain Verification (Microservices, Healthcare, Banking, Logistics)
-make test_phase5
-
-# 5. Run Advanced NLP & LTL Constraint Parser Tests
-make test_phase6
-
-# 6. Run AI Agent Controller & SWE-bench Governor Tests
-make test_phase7
-
-# 7. Run Bonus Topics (Multi-Goal TSP, Temporal Schedules, Knowledge Graphs)
-make test_bonus
-
-# 8. Run Full Regression Suite (All Tests Back-to-Back)
-make test_phase1 && make test_phase2 && make test_assignment_tc && make test_phase5 && make test_phase6 && make test_phase7 && make test_bonus
+# Or run individual test modules:
+make test_phase1              # KD-tree & spatial math
+make test_phase2              # D* Lite & potential fields
+make test_assignment_tc       # TC1 - TC6 verification
+make test_phase5              # Enterprise domains
+make test_phase6              # NLP & semantic embeddings
+make test_phase7              # AI Agent Governor & SWE-bench
+make test_bonus               # Bonus topics (TSP, Temporal, KG)
+make test_dstar_verification  # D* Lite formal invariant verification
+make test_nlp_comprehensive   # Inverted & bidirectional NLP queries
 ```
 
 ---
 
-## 3. Interactive CLI Tools & Benchmark Runbook
+## 3. Interactive CLI Tools
 
-### 3.1 Performance & Stress Benchmark Runner
+### 3.1 Benchmark Engine
 ```bash
 make benchmark
+# Or directly:
+./bin/benchmark_main
 ```
-*Output*: Measures cold search vs dynamic replanning times across grid topologies up to 2,500 states and 19,404 transitions, reporting speedup factors ($219\times$) and node expansion counts.
+Evaluates cold-start planning versus dynamic incremental replanning across 100 to 2,500 state topologies, reporting speedup ratios and node expansions.
 
-### 3.2 Interactive NLP CLI
+### 3.2 Natural Language Interface CLI
 ```bash
-# Run default demo script
 make nlp
-
-# Or pass any custom natural language command directly:
+# Or pass custom queries:
 ./bin/nlp_main "Find safe route from API Gateway to Order Confirmed avoiding vulnerable scanners"
 ./bin/nlp_main "Make A the start state and G the goal state as constraints such that it never goes through state C if it ever goes through state B and Should go through state E"
+./bin/nlp_main "Make G the goal state and A the start state"
 ```
 
-### 3.3 SWE-bench Autonomous Agent Controller Scoreboard
+### 3.3 SWE-bench Autonomous AI Agent Scoreboard
 ```bash
 make agent
+# Or directly:
+./bin/agent_main
 ```
-*Output*: Executes a simulated Django ORM multi-step bug fix, comparing Naive ReAct LLMs against the SSP Neuro-Symbolic Governor with token savings ($53.3\%$) and decision latency ($5.0\text{ }\mu\text{s}$) metrics.
+Simulates a real-world multi-step bug fix on Django ORM, comparing Naive ReAct LLM loops against the SSP Neuro-Symbolic Governor.
 
-### 3.4 Bonus Features Inspector
+### 3.4 Bonus Features Demonstration CLI
 ```bash
-make bonus_main
+make bonus
+# Or directly:
+./bin/bonus_main
 ```
-*Output*: Runs the Multi-Goal TSP Branch & Bound sequencer, Time-Dependent transition window simulation, and Biomedical Knowledge Graph pathfinder with toxic concept avoidance.
+Demonstrates Multi-Goal TSP Held-Karp dynamic programming, time-dependent availability windows, and biomedical knowledge graph reasoning.
 
 ---
 
-## 4. Interactive Web Visualizer Walkthrough
+## 4. Web Visualizer Operation Guide
 
-Launch the web visualizer:
+Launch the local web server:
 ```bash
 make server
 ```
-Open **`http://localhost:8080`** in your browser.
+Then open `http://localhost:8080` in your web browser, or access the live deployed instance at **[ssp.gabrieljames.me](https://ssp.gabrieljames.me)**.
 
-### 4.1 Four Visualisation Modes
-Switch between perspectives using the top navigation bar:
-1. **2D Graph Mode**:
-   - Interactive orthographic vector space with deep zoom ($0.02\times$ to $50\times$).
-   - Click and drag states across the screen with real-time dynamic replanning.
-   - Click and drag empty canvas to pan across large graph topologies.
-   - Smart Auto-Fit button that normalizes and scales $[0, 1]^d$ unit hypercubes automatically.
-2. **3D Tilt Mode**:
-   - True 3D isometric camera projection with live Pitch ($15^\circ\text{–}80^\circ$) and Yaw ($-75^\circ\text{–}+75^\circ$) sliders.
-   - Z-Height extrusion by Traversal Cost, Hazard Clearance, or Embedding Dimensions.
-   - Cylindrical 3D state pedestals and floating trajectory ribbons.
-3. **Pipeline Flow Mode**:
-   - Linear step-by-step pipeline cards displaying exact coordinate vectors $\mathbf{x} \in \mathbb{R}^d$, role badges (Start, Waypoint, Goal), cost deltas, and transition connectors.
-4. **Data Matrix Mode**:
-   - Full inspectable tabular repository of all States, Directed Transitions, and the $N \times N$ State-to-State Euclidean Clearance Heatmap Matrix.
+### 4.1 Four Visualizer Perspectives
+- **2D Graph Mode**: Interactive continuous vector space canvas. Supports smooth zoom (mouse wheel, 0.02x to 50x), pan (drag empty canvas), and live node relocation with sub-microsecond replanning.
+- **3D Tilt Mode**: True 3D isometric camera projection with live Pitch (15 deg to 80 deg) and Yaw (-75 deg to +75 deg) sliders. Extrudes node elevations by cost, clearance, or high-dimensional embeddings.
+- **Pipeline Flow Mode**: Linear step-by-step cards showing exact coordinate vectors, role badges (Start, Waypoint, Goal), cost deltas, and transition connectors.
+- **Data Matrix Mode**: Tabular matrix of all States, Directed Transitions, and the N x N State-to-State Euclidean Clearance Heatmap.
 
-### 4.2 Left Vertical Tool Dock (Figma-Style)
-- **Drag State** (`move` icon): Drag any node to dynamically adjust its embedding position and trigger sub-microsecond replanning.
-- **Pan Map** (`hand` icon): Freely pan across the canvas viewport.
-- **2-State Compare** (`scan-line` icon): Select any two nodes to inspect their vector distance, cosine similarity, and coordinate shifts.
-- **+State / +Edge**: Click to place new states or draw directed transitions.
-- **Edit / Delete**: Edit cost, SLA reliability, safety margins, or delete graph elements.
-- **Toggle Hazard** (`shield-alert` icon): Instantly quarantine or unquarantine any state as an active hazard.
-- **Sever Edge** (`scissors` icon): Sever or restore any transition to trigger dynamic failover.
-- **Set Start / Set Goal**: Designate origin and destination endpoints.
+### 4.2 Left Vertical Tool Dock
+- **Drag State** (`move` icon): Drag any node to reposition its coordinates in real time; the planner instantly updates the trajectory.
+- **Pan Map** (`hand` icon): Pan across the viewport.
+- **2-State Compare** (`scan-line` icon): Select any two nodes to inspect Euclidean distance, cosine similarity, and coordinate shifts.
+- **+State**: Click anywhere on the canvas to place a new state node.
+- **+Edge**: Click source node then destination node to create a directed transition.
+- **Edit**: Click any node or edge to edit base cost, SLA reliability, safety margin, or embedding coordinates.
+- **Delete**: Click any state or transition to remove it from the graph.
+- **Toggle Hazard** (`shield-alert` icon): Click any node to instantly quarantine or unquarantine it as an active hazard.
+- **Sever Edge** (`scissors` icon): Click any transition to sever or restore availability, triggering dynamic failover.
+- **Set Start / Set Goal**: Designate new origin and destination endpoints.
 
-### 4.3 Rich Hover Tooltips Everywhere
-Hover over any node or edge to display a floating glassmorphic tooltip with:
-- **Node**: ID, Name, Full High-Dim Embedding Vector $[\dots]$, In/Out Degrees, and Role Badge.
-- **Edge**: ID, Name, Route $A \to B$, Base Cost, Reliability SLA %, and Safety Margin %.
+### 4.3 Objective Tuning & Sliders
+- **Alpha (Goal)**: Terminal goal completion reward weight.
+- **Beta (Cost)**: Traversal cost penalty weight.
+- **Gamma (Safety)**: Repulsive spatial potential barrier weight around bad states.
+- **Delta (Reliability)**: Multiplicative transition reliability SLA weight.
+- **R (Safety Margin)**: Physical radius around quarantined states where repulsive potential fields are active.
 
 ### 4.4 Enriched Path JSON Export
-Clicking the **Path** button exports a comprehensive, machine-readable and human-friendly JSON specification containing:
-- Human-readable state names and descriptions
-- Role classifications (Start State, Waypoint, Goal Destination)
-- Full coordinate embeddings with named dimension mappings
-- Transition action names, descriptions, SLA reliabilities, and costs
-- Summary metadata ($C$, $D_{\min}$, $R_{\text{cum}}$, planning latency in $\mu\text{s}$)
+Click the **Path** button in the top bar to export the computed optimal trajectory. The exported JSON contains complete state names, role badges, high-dimensional coordinate vectors, transition metadata, and summary telemetry (latency in us, total cost, minimum hazard clearance, cumulative SLA).
 
 ---
 
 ## 5. REST API Reference
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Health check and engine status |
-| `GET` | `/api/problem` | Current planning problem & config |
-| `GET` | `/api/export_path` | Enriched optimal trajectory JSON (with names & descriptions) |
-| `GET` | `/api/templates` | Built-in enterprise domain templates |
-| `GET` | `/api/schema` | JSON Schema for problem manifests |
-| `POST` | `/api/plan` | Compute optimal collision-free trajectory |
-| `POST` | `/api/nlp_command` | Execute 64-D natural language / LTL command |
-| `POST` | `/api/update_weights`| Live update $\alpha, \beta, \gamma, \delta, R_{\text{margin}}$ hyperparameters |
-| `POST` | `/api/toggle_hazard` | Dynamically add / remove bad state |
-| `POST` | `/api/toggle_edge` | Sever / restore transition availability |
-| `POST` | `/api/update_start` | Shift initial start state |
-| `POST` | `/api/update_goal` | Shift destination goal state |
+The single-binary web server (`bin/ssp_server`) exposes the following endpoints:
+
+| Method | Route | Description | Request Body | Response Body |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/health` | Service health & engine status | None | `{"status":"ok","engine":"DStarLite"}` |
+| `GET` | `/api/problem` | Current planning problem & config | None | Complete `PlanningProblem` JSON |
+| `GET` | `/api/templates` | Built-in enterprise domain templates | None | Array of template descriptors |
+| `GET` | `/api/export_path` | Enriched optimal trajectory JSON | None | Trajectory manifest with metadata |
+| `POST` | `/api/plan` | Compute optimal collision-free path | `PlanningProblem` JSON | `PlanningResult` JSON |
+| `POST` | `/api/nlp_command` | Execute natural language / LTL query | `{"query":"string"}` | `{"result":...,"command":...}` |
+| `POST` | `/api/update_weights` | Live update objective weights | `{"alpha_goal":...,"beta_cost":...}` | `{"success":true}` |
+| `POST` | `/api/toggle_hazard` | Quarantine or restore state | `{"stateId":4}` | `PlanningResult` JSON |
+| `POST` | `/api/toggle_edge` | Sever or restore transition | `{"edgeId":102,"available":false}`| `PlanningResult` JSON |
+| `POST` | `/api/update_start` | Update initial start state | `{"stateId":0}` | `PlanningResult` JSON |
+| `POST` | `/api/update_goal` | Update destination goal state | `{"stateId":6}` | `PlanningResult` JSON |

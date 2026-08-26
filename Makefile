@@ -4,9 +4,9 @@ CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic -O3 -Iinclude -Ithird_party -I. 
 BIN_DIR := bin
 BUILD_DIR := build
 
-.PHONY: all clean test_phase1 test_phase2 test_assignment_tc test_phase5 test_phase6 test_phase7 test_bonus benchmark inspect_phase1 inspect_phase2 inspect_phase5 nlp_main agent_main bonus_main server
+.PHONY: all clean test test_phase1 test_phase2 test_assignment_tc test_phase5 test_phase6 test_phase7 test_bonus test_dstar_verification test_nlp_comprehensive benchmark nlp_main agent_main bonus_main server
 
-all: $(BIN_DIR)/test_phase1 $(BIN_DIR)/test_phase2 $(BIN_DIR)/test_assignment_tc $(BIN_DIR)/test_phase5 $(BIN_DIR)/test_phase6 $(BIN_DIR)/test_phase7 $(BIN_DIR)/test_bonus $(BIN_DIR)/inspect_phase1 $(BIN_DIR)/inspect_phase2 $(BIN_DIR)/inspect_phase5 $(BIN_DIR)/nlp_main $(BIN_DIR)/agent_main $(BIN_DIR)/bonus_main $(BIN_DIR)/benchmark_main $(BIN_DIR)/ssp_server
+all: $(BIN_DIR)/test_phase1 $(BIN_DIR)/test_phase2 $(BIN_DIR)/test_assignment_tc $(BIN_DIR)/test_phase5 $(BIN_DIR)/test_phase6 $(BIN_DIR)/test_phase7 $(BIN_DIR)/test_bonus $(BIN_DIR)/test_dstar_verification $(BIN_DIR)/test_nlp_comprehensive $(BIN_DIR)/nlp_main $(BIN_DIR)/agent_main $(BIN_DIR)/bonus_main $(BIN_DIR)/benchmark_main $(BIN_DIR)/ssp_server
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
@@ -35,13 +35,10 @@ $(BIN_DIR)/test_phase7: tests/test_phase7.cpp | $(BIN_DIR)
 $(BIN_DIR)/test_bonus: tests/test_bonus.cpp | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-$(BIN_DIR)/inspect_phase1: src/inspect_phase1.cpp | $(BIN_DIR)
+$(BIN_DIR)/test_dstar_verification: tests/test_dstar_verification.cpp | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-$(BIN_DIR)/inspect_phase2: src/inspect_phase2.cpp | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-$(BIN_DIR)/inspect_phase5: src/inspect_phase5.cpp | $(BIN_DIR)
+$(BIN_DIR)/test_nlp_comprehensive: tests/test_nlp_comprehensive.cpp | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(BIN_DIR)/nlp_main: src/nlp_main.cpp | $(BIN_DIR)
@@ -80,17 +77,16 @@ test_phase7: $(BIN_DIR)/test_phase7
 test_bonus: $(BIN_DIR)/test_bonus
 	./$(BIN_DIR)/test_bonus
 
+test_dstar_verification: $(BIN_DIR)/test_dstar_verification
+	./$(BIN_DIR)/test_dstar_verification
+
+test_nlp_comprehensive: $(BIN_DIR)/test_nlp_comprehensive
+	./$(BIN_DIR)/test_nlp_comprehensive
+
+test: test_phase1 test_phase2 test_assignment_tc test_phase5 test_phase6 test_phase7 test_bonus test_dstar_verification test_nlp_comprehensive
+
 benchmark: $(BIN_DIR)/benchmark_main
 	./$(BIN_DIR)/benchmark_main
-
-inspect_phase1: $(BIN_DIR)/inspect_phase1
-	./$(BIN_DIR)/inspect_phase1
-
-inspect_phase2: $(BIN_DIR)/inspect_phase2
-	./$(BIN_DIR)/inspect_phase2
-
-inspect_phase5: $(BIN_DIR)/inspect_phase5
-	./$(BIN_DIR)/inspect_phase5
 
 nlp: $(BIN_DIR)/nlp_main
 	./$(BIN_DIR)/nlp_main

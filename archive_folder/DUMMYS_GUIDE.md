@@ -1,11 +1,11 @@
 # Safe Semantic Planner (SSP)
-# The Friendly "For Dummies" Guide & Deep Dive 🧠✨
+# The Friendly "For Dummies" Guide & Deep Dive
 
 Welcome! Whether you are a student, engineer, or curious developer, this guide is written to explain **everything** in the Safe Semantic Planner project in plain, intuitive English — zero gatekeeping, clear analogies, visual ASCII diagrams, and step-by-step examples.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 1. [The 10,000-Foot Big Picture](#1-the-10000-foot-big-picture)
 2. [What Is a "High-Dimensional Semantic State Space"?](#2-what-is-a-high-dimensional-semantic-state-space)
 3. [D* Lite Algorithm Explained for Humans](#3-d-lite-algorithm-explained-for-humans)
@@ -61,7 +61,7 @@ Let's demystify $\text{D}^* \text{ Lite}$ (created by Sven Koenig and Maxim Likh
 │                                                                        │
 │   [Start] ────► [State A] ────► [State B] ────► [Goal]                 │
 │                                   │                                    │
-│                              💥 ROAD BLOCKED!                          │
+│                              *** ROAD BLOCKED!                         │
 │                                   │                                    │
 │   Standard A*: Recalculate ALL nodes from scratch (Slow)               │
 │   D* Lite:     Only update State B and its immediate neighbors (0.4 µs)│
@@ -257,13 +257,13 @@ When you launch `http://localhost:8080`, here is your quick-reference manual:
 
 | Tool Icon | Key Name | Action |
 | :--- | :--- | :--- |
-| ✥ `move` | **Drag State** | Click and drag any node; watch the safe path replan in real time! |
-| ✋ `hand` | **Pan Map** | Drag anywhere on the canvas to explore large maps. |
-| ⚲ `scan-line` | **2-State Compare** | Click two nodes to see their Euclidean distance & cosine similarity. |
-| 🛡️ `shield-alert` | **Toggle Hazard** | Click any node to instantly quarantine it as a dangerous obstacle. |
-| ✂️ `scissors` | **Sever Edge** | Click any line to break it; watch the engine find a detour in microseconds. |
-| 🧭 `Proj Dropdown` | **Projection Picker** | Switch between Dim 1, Dim 2, Dim 3... Dim $d$ to view high-D slices. |
-| 📦 `Path Button` | **Export Path** | Download the full optimal path JSON with state names, descriptions, and SLAs. |
+| [+] `move` | **Drag State** | Click and drag any node; watch the safe path replan in real time! |
+| [H] `hand` | **Pan Map** | Drag anywhere on the canvas to explore large maps. |
+| [V] `scan-line` | **2-State Compare** | Click two nodes to see their Euclidean distance & cosine similarity. |
+| [S] `shield-alert` | **Toggle Hazard** | Click any node to instantly quarantine it as a dangerous obstacle. |
+| [X] `scissors` | **Sever Edge** | Click any line to break it; watch the engine find a detour in microseconds. |
+| [P] `Proj Dropdown` | **Projection Picker** | Switch between Dim 1, Dim 2, Dim 3... Dim $d$ to view high-D slices. |
+| [E] `Path Button` | **Export Path** | Download the full optimal path JSON with state names, descriptions, and SLAs. |
 
 ---
 
@@ -276,4 +276,4 @@ $$\begin{aligned}
 \end{aligned}$$
 
 ---
-*Happy Planning! 🚀*
+*Happy Planning!*

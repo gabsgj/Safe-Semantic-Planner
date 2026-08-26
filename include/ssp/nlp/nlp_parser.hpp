@@ -362,10 +362,16 @@ private:
         if (lower.find("prioritize safety") != std::string::npos || lower.find("increase safety") != std::string::npos || lower.find("safety first") != std::string::npos || lower.find("tune") != std::string::npos || lower.find("weight") != std::string::npos || lower.find("max reliability") != std::string::npos || lower.find("highest sla") != std::string::npos || lower.find("cheapest") != std::string::npos) {
             return {CommandIntentType::TUNE_OBJECTIVES, 0.95};
         }
-        if (lower.find("set start") != std::string::npos || lower.find("start from") != std::string::npos || lower.find("origin is") != std::string::npos || lower.find("begin at") != std::string::npos) {
+        bool hasStartKw = (lower.find("start") != std::string::npos || lower.find("origin") != std::string::npos || lower.find("begin") != std::string::npos || lower.find("from ") != std::string::npos);
+        bool hasGoalKw = (lower.find("goal") != std::string::npos || lower.find("destination") != std::string::npos || lower.find("target") != std::string::npos || lower.find("end at") != std::string::npos || lower.find("to ") != std::string::npos);
+
+        if (hasStartKw && hasGoalKw) {
+            return {CommandIntentType::PLAN_ROUTE, 0.97};
+        }
+        if (hasStartKw && !hasGoalKw && (lower.find("set start") != std::string::npos || lower.find("start from") != std::string::npos || lower.find("origin is") != std::string::npos || lower.find("begin at") != std::string::npos || lower.find("make ") != std::string::npos)) {
             return {CommandIntentType::SET_START, 0.94};
         }
-        if (lower.find("set goal") != std::string::npos || lower.find("destination is") != std::string::npos || lower.find("target is") != std::string::npos || lower.find("end at") != std::string::npos) {
+        if (hasGoalKw && !hasStartKw && (lower.find("set goal") != std::string::npos || lower.find("destination is") != std::string::npos || lower.find("target is") != std::string::npos || lower.find("end at") != std::string::npos || lower.find("navigate to") != std::string::npos || lower.find("make ") != std::string::npos)) {
             return {CommandIntentType::SET_GOAL, 0.94};
         }
         if (lower.find("route") != std::string::npos || lower.find("path") != std::string::npos || lower.find("navigate") != std::string::npos || lower.find("plan") != std::string::npos || lower.find("find") != std::string::npos || lower.find("go to") != std::string::npos || lower.find("take me") != std::string::npos) {
@@ -390,31 +396,46 @@ private:
         return {bestIntent, conf};
     }
 
+    static std::vector<std::string> splitClauses(const std::string& query) {
+        std::vector<std::string> clauses;
+        std::regex clauseSep("\\s+(?:and|then|with|where|\\,)\\s+|[;,]");
+        std::sregex_token_iterator iter(query.begin(), query.end(), clauseSep, -1);
+        std::sregex_token_iterator end;
+        for (; iter != end; ++iter) {
+            std::string s = iter->str();
+            s.erase(0, s.find_first_not_of(" \t\n\r"));
+            if (s.find_last_not_of(" \t\n\r") != std::string::npos) {
+                s.erase(s.find_last_not_of(" \t\n\r") + 1);
+            }
+            if (!s.empty()) clauses.push_back(s);
+        }
+        if (clauses.empty() && !query.empty()) clauses.push_back(query);
+        return clauses;
+    }
+
+    static std::string cleanEntityString(const std::string& clause, bool isStartRole) {
+        std::string res = clause;
+        if (isStartRole) {
+            res = std::regex_replace(res, std::regex("\\b(make|set|the|as|is|state|node|start|origin|initial|begin|at|from|to|into)\\b"), " ");
+        } else {
+            res = std::regex_replace(res, std::regex("\\b(make|set|the|as|is|state|node|goal|destination|target|reach|end|at|to|into)\\b"), " ");
+        }
+        res = std::regex_replace(res, std::regex("\\b(such|that|it|with|constraints|conditions|please|now)\\b"), " ");
+        std::stringstream ss(res);
+        std::string word, out;
+        while (ss >> word) {
+            if (!out.empty()) out += " ";
+            out += word;
+        }
+        return out;
+    }
+
     void extractComplexConstraints(
         const std::string& lower,
         const core::PlanningProblem& prob,
         ParsedCommand& cmd
     ) const {
-        // 1. Extract Start State
-        std::regex startRegex("(?:make|set|from|start\\s+at|begin\\s+at)\\s+([a-zA-Z0-9_#]+?)\\s+(?:the\\s+start|as\\s+start|state|origin)");
-        std::smatch match;
-        if (std::regex_search(lower, match, startRegex) && match.size() >= 2) {
-            cmd.resolvedStartId = resolveBestState(match[1].str(), prob.states).first;
-            cmd.slots["start"] = match[1].str();
-        } else {
-            cmd.resolvedStartId = prob.initialState;
-        }
-
-        // 2. Extract Goal State
-        std::regex goalRegex("(?:and\\s+)?([a-zA-Z0-9_#]+?)\\s+(?:the\\s+goal|as\\s+goal|target|destination|end)");
-        if (std::regex_search(lower, match, goalRegex) && match.size() >= 2) {
-            cmd.resolvedGoalId = resolveBestState(match[1].str(), prob.states).first;
-            cmd.slots["goal"] = match[1].str();
-        } else {
-            cmd.resolvedGoalId = prob.goalState;
-        }
-
-        // 3. Extract Mandatory Waypoints
+        // 1. Extract Mandatory Waypoints
         std::regex waypointRegex("(?:should\\s+go\\s+through|must\\s+visit|must\\s+pass|pass\\s+through|visit|via)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)");
         auto wpBegin = std::sregex_iterator(lower.begin(), lower.end(), waypointRegex);
         auto wpEnd = std::sregex_iterator();
@@ -427,14 +448,58 @@ private:
             }
         }
 
-        // 4. Extract Conditional Constraints ("never go through X if visited Y")
+        // 2. Extract Conditional Constraints ("never go through X if visited Y")
         std::regex condRegex("(?:never\\s+(?:goes\\s+through|go\\s+through|visit)|avoid)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)\\s+if\\s+(?:it\\s+ever\\s+goes\\s+through|visited|touch)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#]+)");
+        std::smatch match;
         if (std::regex_search(lower, match, condRegex) && match.size() >= 3) {
             uint64_t forbiddenId = resolveBestState(match[1].str(), prob.states).first;
             uint64_t triggerId = resolveBestState(match[2].str(), prob.states).first;
             cmd.conditionalConstraints.push_back({triggerId, forbiddenId});
             cmd.slots["cond_forbidden"] = match[1].str();
             cmd.slots["cond_trigger"] = match[2].str();
+        }
+
+        // 3. Clean query to isolate start and goal definitions
+        std::string cleanQ = std::regex_replace(lower, waypointRegex, " ");
+        cleanQ = std::regex_replace(cleanQ, condRegex, " ");
+        cleanQ = std::regex_replace(cleanQ, std::regex("\\b(as\\s+constraints|such\\s+that|with\\s+conditions|if\\s+it\\s+ever)\\b"), " ");
+
+        std::string extractedStartStr;
+        std::string extractedGoalStr;
+
+        auto clauses = splitClauses(cleanQ);
+        for (const auto& clause : clauses) {
+            bool hasStartKeyword = (clause.find("start") != std::string::npos ||
+                                    clause.find("origin") != std::string::npos ||
+                                    clause.find("initial") != std::string::npos ||
+                                    clause.find("begin") != std::string::npos);
+            bool hasGoalKeyword = (clause.find("goal") != std::string::npos ||
+                                   clause.find("destination") != std::string::npos ||
+                                   clause.find("target") != std::string::npos ||
+                                   clause.find("reach") != std::string::npos ||
+                                   clause.find("end") != std::string::npos);
+
+            if (hasStartKeyword && !hasGoalKeyword) {
+                std::string cleaned = cleanEntityString(clause, true);
+                if (!cleaned.empty()) extractedStartStr = cleaned;
+            } else if (hasGoalKeyword && !hasStartKeyword) {
+                std::string cleaned = cleanEntityString(clause, false);
+                if (!cleaned.empty()) extractedGoalStr = cleaned;
+            }
+        }
+
+        if (!extractedStartStr.empty()) {
+            cmd.resolvedStartId = resolveBestState(extractedStartStr, prob.states).first;
+            cmd.slots["start"] = extractedStartStr;
+        } else {
+            cmd.resolvedStartId = prob.initialState;
+        }
+
+        if (!extractedGoalStr.empty()) {
+            cmd.resolvedGoalId = resolveBestState(extractedGoalStr, prob.states).first;
+            cmd.slots["goal"] = extractedGoalStr;
+        } else {
+            cmd.resolvedGoalId = prob.goalState;
         }
     }
 
@@ -443,46 +508,82 @@ private:
         const core::PlanningProblem& prob, 
         ParsedCommand& cmd
     ) const {
-        std::regex fromToRegex("(?:from|between)\\s+([a-zA-Z0-9_#\\s]+?)\\s+(?:to|and)\\s+([a-zA-Z0-9_#\\s]+)");
-        std::smatch match;
-        if (std::regex_search(lower, match, fromToRegex) && match.size() >= 3) {
-            std::string fromStr = match[1].str();
-            std::string toStr = match[2].str();
+        std::string queryStr = lower;
 
-            size_t avoidPos = toStr.find("avoiding");
-            if (avoidPos == std::string::npos) avoidPos = toStr.find("without");
-            if (avoidPos == std::string::npos) avoidPos = toStr.find("bypassing");
-            if (avoidPos == std::string::npos) avoidPos = toStr.find("except");
+        // 1. Check for hazard in avoiding / without / bypassing / except / quarantine
+        std::regex hazardRegex("(?:avoiding|without|bypassing|except|avoid|quarantine|quarantining)\\s+(?:state\\s+|node\\s+)?([a-zA-Z0-9_#\\s]+)");
+        std::smatch hMatch;
+        if (std::regex_search(queryStr, hMatch, hazardRegex) && hMatch.size() >= 2) {
+            std::string hStr = hMatch[1].str();
+            cmd.resolvedHazardId = resolveBestState(hStr, prob.states).first;
+            cmd.slots["avoid_hazard"] = hStr;
+            queryStr = queryStr.substr(0, hMatch.position()) + " " + queryStr.substr(hMatch.position() + hMatch.length());
+        }
 
-            if (avoidPos != std::string::npos) {
-                std::string hazardClause = toStr.substr(avoidPos);
-                toStr = toStr.substr(0, avoidPos);
-                cmd.resolvedHazardId = resolveBestState(hazardClause, prob.states).first;
-                cmd.slots["avoid_hazard"] = hazardClause;
+        std::string extractedStartStr;
+        std::string extractedGoalStr;
+
+        auto clauses = splitClauses(queryStr);
+        for (const auto& clause : clauses) {
+            bool hasStartKeyword = (clause.find("start") != std::string::npos ||
+                                    clause.find("origin") != std::string::npos ||
+                                    clause.find("initial") != std::string::npos ||
+                                    clause.find("begin") != std::string::npos);
+            bool hasGoalKeyword = (clause.find("goal") != std::string::npos ||
+                                   clause.find("destination") != std::string::npos ||
+                                   clause.find("target") != std::string::npos ||
+                                   clause.find("reach") != std::string::npos ||
+                                   clause.find("end at") != std::string::npos ||
+                                   clause.find("end") != std::string::npos);
+
+            // If clause contains "from X to Y" in one clause
+            std::regex fromToRegex("(?:from|between)\\s+([a-zA-Z0-9_#\\s]+?)\\s+(?:to|and)\\s+([a-zA-Z0-9_#\\s]+)");
+            std::smatch ftm;
+            if (std::regex_search(clause, ftm, fromToRegex) && ftm.size() >= 3) {
+                extractedStartStr = ftm[1].str();
+                extractedGoalStr = ftm[2].str();
+                continue;
             }
 
-            cmd.resolvedStartId = resolveBestState(fromStr, prob.states).first;
-            cmd.resolvedGoalId = resolveBestState(toStr, prob.states).first;
-            cmd.slots["start"] = fromStr;
-            cmd.slots["goal"] = toStr;
-        } else {
-            // Check direct "to <Goal>" expressions
-            std::regex toRegex("(?:to|destination\\s+is|target\\s+is|reach|take\\s+me\\s+to)\\s+([a-zA-Z0-9_#\\s]+)");
-            if (std::regex_search(lower, match, toRegex) && match.size() >= 2) {
-                std::string toStr = match[1].str();
-                size_t avoidPos = toStr.find("avoiding");
-                if (avoidPos != std::string::npos) {
-                    std::string hazardClause = toStr.substr(avoidPos);
-                    toStr = toStr.substr(0, avoidPos);
-                    cmd.resolvedHazardId = resolveBestState(hazardClause, prob.states).first;
+            if (hasStartKeyword && !hasGoalKeyword) {
+                std::string cleaned = cleanEntityString(clause, true);
+                if (!cleaned.empty()) extractedStartStr = cleaned;
+            } else if (hasGoalKeyword && !hasStartKeyword) {
+                std::string cleaned = cleanEntityString(clause, false);
+                if (!cleaned.empty()) extractedGoalStr = cleaned;
+            } else if (!hasStartKeyword && !hasGoalKeyword) {
+                if (clause.find("from ") != std::string::npos || clause.rfind("from", 0) == 0) {
+                    std::string cleaned = cleanEntityString(clause, true);
+                    if (!cleaned.empty()) extractedStartStr = cleaned;
+                } else if (clause.find("to ") != std::string::npos || clause.rfind("to", 0) == 0) {
+                    std::string cleaned = cleanEntityString(clause, false);
+                    if (!cleaned.empty()) extractedGoalStr = cleaned;
                 }
-                cmd.resolvedGoalId = resolveBestState(toStr, prob.states).first;
-                cmd.resolvedStartId = prob.initialState;
-                cmd.slots["goal"] = toStr;
-            } else {
-                cmd.resolvedStartId = prob.initialState;
-                cmd.resolvedGoalId = prob.goalState;
             }
+        }
+
+        // Fallback regex if clause splitting did not catch both
+        if (extractedStartStr.empty() || extractedGoalStr.empty()) {
+            std::regex fromToRegex("(?:from|between)\\s+([a-zA-Z0-9_#\\s]+?)\\s+(?:to|and)\\s+([a-zA-Z0-9_#\\s]+)");
+            std::smatch ftm;
+            if (std::regex_search(queryStr, ftm, fromToRegex) && ftm.size() >= 3) {
+                if (extractedStartStr.empty()) extractedStartStr = ftm[1].str();
+                if (extractedGoalStr.empty()) extractedGoalStr = ftm[2].str();
+            }
+        }
+
+        if (!extractedStartStr.empty()) {
+            cmd.resolvedStartId = resolveBestState(extractedStartStr, prob.states).first;
+            cmd.slots["start"] = extractedStartStr;
+        } else {
+            cmd.resolvedStartId = prob.initialState;
+        }
+
+        if (!extractedGoalStr.empty()) {
+            cmd.resolvedGoalId = resolveBestState(extractedGoalStr, prob.states).first;
+            cmd.slots["goal"] = extractedGoalStr;
+        } else {
+            cmd.resolvedGoalId = prob.goalState;
         }
     }
 

@@ -49,7 +49,7 @@
   --radius-pill: 9999px;
 
   /* Layout Constants */
-  --sidebar-width: 380px;
+  --sidebar-width: 410px;
 }
 
 * {
@@ -1074,28 +1074,41 @@ body {
   display: flex;
   background-color: var(--bg-muted);
   padding: 4px;
-  gap: 3px;
+  gap: 2px;
   border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sidebar-tabs::-webkit-scrollbar {
+  display: none;
 }
 .tab-btn {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 7px 4px;
-  font-size: 11px;
+  gap: 3.5px;
+  padding: 6px 3px;
+  font-size: 10.5px;
   font-weight: 600;
   color: var(--text-muted);
   background: transparent;
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  white-space: nowrap;
   transition: all 120ms ease;
 }
+.tab-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .tab-btn i {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 .tab-btn:hover {
   color: var(--text-primary);
@@ -1636,3 +1649,21 @@ body {
 .modal-footer { padding: 12px 16px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--border-subtle); background: var(--bg-muted); }
 .form-input { width: 100%; padding: 7px 10px; font-size: 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); outline: none; }
 .form-input:focus { border-color: var(--border-accent); }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .sidebar-panel {
+    width: 360px;
+    min-width: 320px;
+  }
+  .tab-btn {
+    font-size: 10px;
+    padding: 5px 2px;
+    gap: 2.5px;
+  }
+  .tab-btn i {
+    width: 11px;
+    height: 11px;
+  }
+}
+

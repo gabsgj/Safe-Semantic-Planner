@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <string>
 #include <iostream>
+#include <optional>
 
 #include "ssp/core/types.hpp"
 #include "ssp/core/state.hpp"
@@ -467,8 +468,15 @@ public:
     core::PlanningResult addTransition(const core::Transition& t) {
         auto startTime = std::chrono::high_resolution_clock::now();
         edges_[t.id] = {t.id, t.from, t.to, t.cost, t.safety, t.reliability, t.available, t.name};
-        outgoingEdges_[t.from].push_back(t.id);
-        incomingEdges_[t.to].push_back(t.id);
+        
+        auto& outList = outgoingEdges_[t.from];
+        if (std::find(outList.begin(), outList.end(), t.id) == outList.end()) {
+            outList.push_back(t.id);
+        }
+        auto& inList = incomingEdges_[t.to];
+        if (std::find(inList.begin(), inList.end(), t.id) == inList.end()) {
+            inList.push_back(t.id);
+        }
         updateVertex(t.from);
 
         computeShortestPath();
@@ -544,12 +552,12 @@ public:
     /**
      * @brief Incremental replanning when agent moves or environment mutates.
      */
-    core::PlanningResult replan(core::StateId currentStartState = 0) {
+    core::PlanningResult replan(std::optional<core::StateId> currentStartState = std::nullopt) {
         auto startTime = std::chrono::high_resolution_clock::now();
-        if (currentStartState != 0 && currentStartState != startState_) {
-            km_ += heuristic_.calculate(lastStartState_, currentStartState);
-            startState_ = currentStartState;
-            lastStartState_ = currentStartState;
+        if (currentStartState.has_value() && *currentStartState != startState_) {
+            km_ += heuristic_.calculate(lastStartState_, *currentStartState);
+            startState_ = *currentStartState;
+            lastStartState_ = *currentStartState;
         }
 
         computeShortestPath();

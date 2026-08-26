@@ -1,62 +1,82 @@
-# Deployment Guide: Hosting Safe Semantic Planner (SSP) on Render
+# Deployment Guide: Safe Semantic Planner (SSP)
 
-This guide provides step-by-step instructions to deploy the Safe Semantic Planner web visualizer and REST API to [Render.com](https://render.com) for free.
+This guide provides step-by-step instructions to build, containerize, and deploy the Safe Semantic Planner web visualizer and REST API.
 
----
-
-## 🚀 Option 1: Docker Web Service (Recommended — 1-Click)
-
-The repository already includes an optimized multi-stage `Dockerfile` and `render.yaml` blueprint.
-
-### Step-by-Step:
-1. **Push your code to GitHub / GitLab**:
-   ```bash
-   git add .
-   git commit -m "Configure Render Docker deployment"
-   git push origin main
-   ```
-
-2. **Log into Render**:
-   - Go to [dashboard.render.com](https://dashboard.render.com).
-
-3. **Create New Web Service**:
-   - Click **New +** $\to$ **Web Service**.
-   - Connect your GitHub / GitLab repository (`SSP`).
-
-4. **Configure Service**:
-   - **Name**: `safe-semantic-planner` (or your choice)
-   - **Region**: Any (e.g. *Oregon, USA* or *Frankfurt, EU*)
-   - **Branch**: `main`
-   - **Environment**: **`Docker`**
-   - **Instance Type**: **`Free`**
-
-5. **Deploy**:
-   - Click **Create Web Service**.
-   - Render will build the multi-stage Docker container and launch the web server automatically.
+**Live Production Deployment**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
 
 ---
 
-## 🛠️ Option 2: Native Native Build (No Docker)
+## 1. Live Production Service
 
-If you prefer building directly on Render's native Linux environment:
-
-1. In Render, select **Environment**: **`Native / Custom`** (Linux).
-2. Set the configuration fields:
-   - **Build Command**:
-     ```bash
-     make bin/ssp_server
-     ```
-   - **Start Command**:
-     ```bash
-     ./bin/ssp_server
-     ```
-3. In **Environment Variables**, Render will automatically inject `$PORT`. The server is pre-configured to bind to `0.0.0.0:$PORT`.
+The Safe Semantic Planner is continuously deployed and accessible globally over HTTPS:
+- Production URL: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)
+- API Health Status: `https://ssp.gabrieljames.me/api/health`
+- Interactive Visualizer: Available directly in any modern desktop or mobile browser.
 
 ---
 
-## 🌐 Verifying Your Live Deployment
+## 2. Option 1: Multi-Stage Docker Web Service
 
-Once the deploy status turns green (**Live**):
-1. Click your Render URL: `https://safe-semantic-planner-xxxx.onrender.com`
-2. You will see the interactive **2D / 3D Visualizer Dashboard**.
-3. All REST endpoints (`/api/problem`, `/api/plan`, `/api/nlp_command`, `/api/export_path`) are immediately accessible over HTTPS!
+The repository contains an optimized multi-stage `Dockerfile` and `render.yaml` blueprint.
+
+### 2.1 Local Docker Build and Execution
+```bash
+# Build the production Docker container
+docker build -t ssp:latest .
+
+# Run the container mapping port 8080
+docker run -p 8080:8080 ssp:latest
+```
+Access the application at `http://localhost:8080`.
+
+### 2.2 Cloud Deployment (Render / AWS / GCP / DigitalOcean)
+1. Push the repository to GitHub or GitLab.
+2. Log into your cloud dashboard (e.g., [dashboard.render.com](https://dashboard.render.com)).
+3. Create a New Web Service:
+   - Connect your repository.
+   - Environment: `Docker`
+   - Instance Type: `Free` or standard tier.
+4. Render automatically parses `render.yaml` and `Dockerfile`, compiling the C++17 binary in an isolated Alpine build stage and launching the runtime container.
+
+---
+
+## 3. Option 2: Native Build & Execution (No Docker)
+
+For Linux and macOS host systems:
+
+### 3.1 Build the Web Server Binary
+```bash
+# Compile server executable with maximum optimization
+make bin/ssp_server
+```
+
+### 3.2 Launch the Server
+```bash
+# Start server (binds to 0.0.0.0:8080 or the PORT environment variable)
+./bin/ssp_server
+```
+
+### 3.3 Custom Port Configuration
+Set the `PORT` environment variable to override the default port (8080):
+```bash
+PORT=9000 ./bin/ssp_server
+```
+
+---
+
+## 4. Verification and Health Checks
+
+After launching the service, verify the server status using curl:
+
+```bash
+# Health check endpoint
+curl -s http://localhost:8080/api/health
+
+# Fetch current problem manifest
+curl -s http://localhost:8080/api/problem | jq .
+
+# Test natural language planning endpoint
+curl -s -X POST http://localhost:8080/api/nlp_command \
+  -H "Content-Type: application/json" \
+  -d '{"query":"Find safe path from start to goal"}' | jq .
+```

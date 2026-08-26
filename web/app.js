@@ -1267,8 +1267,8 @@ function setupEventListeners() {
     }
   });
   document.getElementById('exportPathBtn').addEventListener('click', () => {
-    if (!state.result || !state.result.statePath) {
-      alert('No path available to export. Please compute a plan first.');
+    if (!state.result || !state.result.success || !state.result.statePath || state.result.statePath.length === 0) {
+      alert('No valid path available to export. The target may be unreachable.');
       return;
     }
 

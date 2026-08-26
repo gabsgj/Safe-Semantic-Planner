@@ -5,6 +5,7 @@
 #include <mutex>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 
 #include "ssp/core/problem.hpp"
 #include "ssp/core/result.hpp"
@@ -67,6 +68,71 @@ public:
             setCors(res);
             nlohmann::json j = {{"status", "ok"}, {"engine", "DStarLite"}, {"version", "1.0.0"}};
             res.set_content(j.dump(), "application/json");
+        });
+
+        // GET /api/schema
+        svr.Get("/api/schema", [setCors](const httplib::Request&, httplib::Response& res) {
+            setCors(res);
+            std::ifstream file("web/schema.json");
+            if (!file.is_open()) {
+                file.open("./web/schema.json");
+            }
+            if (!file.is_open()) {
+                file.open("schema.json");
+            }
+            if (file.is_open()) {
+                try {
+                    nlohmann::json j;
+                    file >> j;
+                    res.set_content(j.dump(2), "application/json");
+                    return;
+                } catch (...) {}
+            }
+            // Fallback: embedded schema if schema file not found on disk
+            nlohmann::json fallbackSchema = {
+                {"$schema", "https://json-schema.org/draft/2020-12/schema"},
+                {"title", "SafeSemanticPlannerDomainManifest"},
+                {"description", "JSON Schema specification for Safe Semantic Planner (SSP) Enterprise Domain Manifests"},
+                {"type", "object"},
+                {"required", {"domainName", "initialState", "goalState", "states", "transitions"}},
+                {"properties", {
+                    {"domainName", {{"type", "string"}, {"description", "Human-readable name of the enterprise domain or benchmark"}}},
+                    {"version", {{"type", "string"}, {"default", "1.0.0"}}},
+                    {"initialState", {{"type", "integer"}, {"description", "State ID where the planner starts (s_I)"}}},
+                    {"goalState", {{"type", "integer"}, {"description", "Target State ID where the planner aims to reach (s_G)"}}},
+                    {"badStates", {{"type", "array"}, {"items", {{"type", "integer"}}}, {"description", "Array of state IDs strictly forbidden (Bad States B)"}}},
+                    {"states", {
+                        {"type", "array"},
+                        {"items", {
+                            {"type", "object"},
+                            {"required", {"id", "embedding"}},
+                            {"properties", {
+                                {"id", {{"type", "integer"}}},
+                                {"name", {{"type", "string"}}},
+                                {"embedding", {{"type", "array"}, {"items", {{"type", "number"}}}, {"description", "Vector coordinate in d-dimensional Cartesian space"}}}
+                            }}
+                        }}
+                    }},
+                    {"transitions", {
+                        {"type", "array"},
+                        {"items", {
+                            {"type", "object"},
+                            {"required", {"id", "from", "to"}},
+                            {"properties", {
+                                {"id", {{"type", "integer"}}},
+                                {"from", {{"type", "integer"}}},
+                                {"to", {{"type", "integer"}}},
+                                {"cost", {{"type", "number"}, {"default", 1.0}}},
+                                {"safety", {{"type", "number"}, {"default", 1.0}}},
+                                {"reliability", {{"type", "number"}, {"default", 1.0}}},
+                                {"available", {{"type", "boolean"}, {"default", true}}},
+                                {"name", {{"type", "string"}}}
+                            }}
+                        }}
+                    }}
+                }}
+            };
+            res.set_content(fallbackSchema.dump(2), "application/json");
         });
 
         // GET /api/problem

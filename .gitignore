@@ -7,7 +7,12 @@ bin/
 *.dylib
 *.out
 
-# Reference folder (as requested)
+# Playwright and MCP artifacts
+.playwright-mcp/
+ui_*.png
+*.playwright*
+
+# Reference folder
 JUST A REF/
 
 # OS artifacts
