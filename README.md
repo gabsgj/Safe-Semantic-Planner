@@ -1,4 +1,4 @@
-# Safe Semantic Planner (SSP) & Neuro-Symbolic Governor
+# Safe Semantic Planner (SSP)
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
@@ -8,7 +8,7 @@
 
 **Live Demo**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)
 
-High-dimensional real-time neuro-symbolic motion and workflow planning engine. Powered by **Lifelong Planning D\* Lite**, an **Orthogonal $k$-d Tree spatial hazard index**, **64-D continuous semantic embeddings**, a **SWE-bench AI Agent Governor**, and a **Single-Binary Web Visualizer**.
+High-dimensional real-time safe motion and semantic workflow planning engine in finite Cartesian state space. Powered by **Lifelong Planning D\* Lite**, an **Orthogonal $k$-d Tree spatial hazard index**, **64-D continuous semantic embeddings**, and an **Embedded Single-Binary Web Visualizer**.
 
 ---
 
@@ -16,8 +16,8 @@ High-dimensional real-time neuro-symbolic motion and workflow planning engine. P
 
 - **100% Zero-Violation Safety Invariant**: Hard barrier avoidance for quarantined bad states ($B$).
 - **Sub-Microsecond Incremental Replanning**: Incremental D\* Lite search delivers up to **$219\times$ speedups** ($0.33\text{–}8.4\text{ }\mu\text{s}$) over static $A^*$.
+- **Continuous Metric Potential Barriers**: Smooth exponential repulsive potential fields around hazardous obstacles guarantee optimal clearance corridors.
 - **Native 64-D NLP & LTL Logic Engine**: Parses natural language goals, waypoints, and conditional rules ($\text{If } B \implies \neg C$) in $9.2\text{ }\mu\text{s}$ with **zero external cloud LLM dependencies**.
-- **SWE-bench AI Agent Governor**: Eliminates LLM code hallucination and regression loops with formal mathematical backtracking (**$53.3\%$ token reduction**).
 - **Embedded Web Visualizer**: Embedded multithreaded C++ HTTP server (`cpp-httplib`) with:
   - **4 Visualisation Perspectives**: 2D Vector Graph, 3D Isometric Tilt Perspective, Linear Pipeline Flow, and Data Matrix & State Repository.
   - **Rich Hover Tooltips**: Deep vector inspectability, $D(s, B)$ clearance, in/out degrees, and transition SLAs.

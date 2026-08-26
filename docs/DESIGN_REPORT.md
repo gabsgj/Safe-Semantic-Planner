@@ -8,14 +8,14 @@
 
 ## 1. Executive Summary
 
-The Safe Semantic Planner (SSP) is a real-time, high-dimensional neuro-symbolic motion and workflow planning engine. Designed for mission-critical cyber-physical systems, enterprise microservice meshes, clinical hospital pipelines, and autonomous AI coding agents (SWE-bench), SSP bridges continuous metric space mathematics in R^d with discrete graph search and neuro-symbolic natural language understanding.
+The Safe Semantic Planner (SSP) is a real-time, high-dimensional motion and workflow planning engine in finite Cartesian state spaces. Designed for mission-critical cyber-physical systems, autonomous robotics, enterprise microservice meshes, and clinical hospital triage pipelines, SSP bridges continuous metric space mathematics in R^d with discrete graph search and neuro-symbolic natural language understanding.
 
 Unlike traditional static pathfinders (such as A* and Dijkstra) which require full O(|V| log |V| + |E|) graph reconstruction upon environmental changes, SSP leverages Lifelong Planning D* Lite combined with an Orthogonal k-d Tree spatial hazard index. This delivers:
 1. Deterministic Zero-Violation Safety Guarantee: Hard barrier avoidance forbids traversal through quarantined bad states B.
 2. Sub-Microsecond Dynamic Replanning: Incremental rhs/g/km key modifications enable up to 219x speedups over static search re-computation.
 3. Continuous Potential Barrier Fields: Soft exponential hazard penalties ensure optimal clearance margins around hazardous areas.
 4. Local Sub-Microsecond Neuro-Symbolic NLP: 64-dimensional semantic unit-sphere embeddings and LTL temporal logic parsing with zero cloud API dependencies.
-5. Formal AI Agent Governance: Prevents LLM code hallucination and regression loops in SWE-bench tasks with provable mathematical backtracking.
+5. Multi-Objective Trajectory Optimization: Simultaneously balances goal attainment, edge traversal costs, continuous obstacle clearances, and multiplicative SLA reliabilities.
 
 ---
 

@@ -125,12 +125,6 @@ To evaluate asymptotic performance, benchmarks were conducted on 2D and 3D grid 
 - Description: Logistics navigation in 5D [X, Y, Elevation, Battery, Payload].
 - Result: Computes collision-free trajectory around forklift intersection hazards in 11.2 us.
 
-### 4.5 SWE-bench Autonomous AI Coding Agent Governor
-- Benchmark: Django ORM cache invalidation bug resolution (SWE-bench Task #1042).
-- Comparison:
-  - Naive ReAct LLM Agent: Injected 3 regressions, entered infinite loop, burned 9,000 context tokens (FAILED).
-  - SSP Governed Agent: Quarantined regressions, triggered instant mathematical backtrack in 7.2 us, resolved task cleanly with 4,200 tokens (53.3% token savings, 100% success).
-
 ---
 
 ## 5. Summary of Key Metrics
@@ -141,5 +135,4 @@ To evaluate asymptotic performance, benchmarks were conducted on 2D and 3D grid 
 | **Safety Violations (Bad States Visited)** | 0.0 | 0.0 |
 | **Sub-Millisecond Replan Rate** | 100.0% (< 70 us up to 2.5k nodes) | < 10 ms |
 | **Maximum Replanning Speedup** | 222.2x over cold search | > 10x |
-| **SWE-bench LLM Token Reduction** | 53.3% token savings | > 25% |
 | **NLP Intent & Entity Accuracy** | 100.0% on bidirectional queries | > 95% |

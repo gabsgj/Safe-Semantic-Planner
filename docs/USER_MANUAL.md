@@ -31,13 +31,13 @@ Output binaries generated in `bin/`:
 - `bin/test_assignment_tc`: Mandated Assignment Test Cases (TC1 through TC6)
 - `bin/test_phase5`: Enterprise Domain Templates Test Suite (Healthcare, Microservices, Banking, AMR)
 - `bin/test_phase6`: Advanced NLP & Semantic Embedding Test Suite
-- `bin/test_phase7`: SWE-bench AI Agent Governor & Backtracking Test Suite
+- `bin/test_phase7`: State Snapshot & Backtracking Invariant Test Suite
 - `bin/test_bonus`: Bonus Features Test Suite (TSP, Temporal Windows, Knowledge Graph)
 - `bin/test_dstar_verification`: Algorithmic D* Lite Stress & Invariant Verification Suite
 - `bin/test_nlp_comprehensive`: Bidirectional & Inverted NLP Query Verification Suite
 - `bin/benchmark_main`: Synthetic Grid Benchmark Runner (5x5 to 50x50 topologies)
 - `bin/nlp_main`: Interactive Natural Language Query CLI
-- `bin/agent_main`: SWE-bench Autonomous AI Agent Scoreboard
+- `bin/agent_main`: Interactive Decision Scoreboard CLI
 - `bin/bonus_main`: Interactive Bonus Topics Demonstration CLI
 - `bin/ssp_server`: Embedded Single-Binary Web Visualizer & REST Server
 
@@ -57,7 +57,7 @@ make test_phase2              # D* Lite & potential fields
 make test_assignment_tc       # TC1 - TC6 verification
 make test_phase5              # Enterprise domains
 make test_phase6              # NLP & semantic embeddings
-make test_phase7              # AI Agent Governor & SWE-bench
+make test_phase7              # State snapshots & backtracking invariants
 make test_bonus               # Bonus topics (TSP, Temporal, KG)
 make test_dstar_verification  # D* Lite formal invariant verification
 make test_nlp_comprehensive   # Inverted & bidirectional NLP queries
@@ -84,13 +84,13 @@ make nlp
 ./bin/nlp_main "Make G the goal state and A the start state"
 ```
 
-### 3.3 SWE-bench Autonomous AI Agent Scoreboard
+### 3.3 Interactive Decision Scoreboard CLI
 ```bash
 make agent
 # Or directly:
 ./bin/agent_main
 ```
-Simulates a real-world multi-step bug fix on Django ORM, comparing Naive ReAct LLM loops against the SSP Neuro-Symbolic Governor.
+Evaluates multi-step decision trajectories, comparing unconstrained forward search against constrained potential-barrier backtracking.
 
 ### 3.4 Bonus Features Demonstration CLI
 ```bash
