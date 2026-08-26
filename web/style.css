@@ -118,35 +118,32 @@ body {
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 10px;
   flex-shrink: 0;
 }
-.logo-icon-svg {
+.brand-title {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 2px;
   justify-content: center;
 }
-.brand-title {
+.brand-top-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.brand-name-group {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
 .brand-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.04em;
   color: var(--text-primary);
+  line-height: 1;
 }
 .brand-author {
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-muted);
   letter-spacing: 0.02em;
+  line-height: 1;
 }
 .version-badge {
   font-size: 10px;
@@ -157,6 +154,7 @@ body {
   color: var(--color-indigo);
   border-radius: var(--radius-xs);
   border: 1px solid rgba(79, 70, 229, 0.2);
+  line-height: 1.2;
 }
 
 /* Center: Domain & View Switcher */
