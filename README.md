@@ -1,12 +1,14 @@
 # Safe Semantic Planner (SSP)
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.cppreference.com/w/cpp/17)
+[![Developer: Gabriel James](https://img.shields.io/badge/developer-Gabriel%20James-6366f1.svg)](https://ssp.gabrieljames.me)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Tests](https://img.shields.io/badge/tests-100%25%20passing-success.svg)]()
 [![Zero Cloud Dependencies](https://img.shields.io/badge/offline-100%25%20local-orange.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)]()
 
-**Live Demo**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)
+**Developer**: Gabriel James  
+**Live Demo**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
 
 High-dimensional real-time safe motion and semantic workflow planning engine in finite Cartesian state space. Powered by **Lifelong Planning D\* Lite**, an **Orthogonal $k$-d Tree spatial hazard index**, **64-D continuous semantic embeddings**, and an **Embedded Single-Binary Web Visualizer**.
 
