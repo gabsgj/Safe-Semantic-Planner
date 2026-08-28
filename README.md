@@ -10,19 +10,19 @@
 **Developer**: Gabriel James  
 **Live Demo**: [ssp.gabrieljames.me](https://ssp.gabrieljames.me)  
 
-High-dimensional real-time safe motion and semantic workflow planning engine in finite Cartesian state space. Powered by **Lifelong Planning D\* Lite**, an **Orthogonal $k$-d Tree spatial hazard index**, **64-D continuous semantic embeddings**, and an **Embedded Single-Binary Web Visualizer**.
+High-dimensional real-time safe motion and semantic workflow planning engine in finite Cartesian state space ($\mathbb{R}^d$). Powered by **Lifelong Planning $\text{D}^*$ Lite**, an **Orthogonal $k$-d Tree spatial hazard index**, **64-D continuous semantic embeddings**, and an **Embedded Single-Binary Web Visualizer**.
 
 ---
 
 ## Key Highlights
 
-- **100% Zero-Violation Safety Invariant**: Hard barrier avoidance for quarantined bad states ($B$).
-- **Sub-Microsecond Incremental Replanning**: Incremental D\* Lite search delivers up to **$219\times$ speedups** ($0.33\text{–}8.4\text{ }\mu\text{s}$) over static $A^*$.
+- **100% Zero-Violation Safety Invariant**: Hard barrier avoidance for quarantined bad states ($\mathcal{B}$).
+- **Sub-Microsecond Incremental Replanning**: Incremental $\text{D}^*$ Lite search delivers up to **$219\times$ speedups** ($0.33\text{–}8.4\,\mu\text{s}$) over static $\text{A}^*$.
 - **Continuous Metric Potential Barriers**: Smooth exponential repulsive potential fields around hazardous obstacles guarantee optimal clearance corridors.
-- **Native 64-D NLP & LTL Logic Engine**: Parses natural language goals, waypoints, and conditional rules ($\text{If } B \implies \neg C$) in $9.2\text{ }\mu\text{s}$ with **zero external cloud LLM dependencies**.
+- **Native 64-D NLP & LTL Logic Engine**: Parses natural language goals, waypoints, and conditional rules ($\text{If } B \implies \neg C$) in $9.2\,\mu\text{s}$ with **zero external cloud LLM dependencies**.
 - **Embedded Web Visualizer**: Embedded multithreaded C++ HTTP server (`cpp-httplib`) with:
   - **4 Visualisation Perspectives**: 2D Vector Graph, 3D Isometric Tilt Perspective, Linear Pipeline Flow, and Data Matrix & State Repository.
-  - **Rich Hover Tooltips**: Deep vector inspectability, $D(s, B)$ clearance, in/out degrees, and transition SLAs.
+  - **Rich Hover Tooltips**: Deep vector inspectability, $D(s, \mathcal{B})$ clearance, in/out degrees, and transition SLAs.
   - **Left Vertical Tool Dock**: Figma-style compact toolbar with dedicated Pan Map and Drag State tools.
   - **Enriched Path Export**: Export complete optimal trajectories with human-readable state names, descriptions, coordinates, and edge metadata.
 - **Complete Bonus Implementations**: Multi-Goal TSP Waypoint Sequencer, Time-Dependent Transition Windows, and Biomedical Knowledge Graph Reasoning.
@@ -51,6 +51,7 @@ High-dimensional real-time safe motion and semantic workflow planning engine in 
 │  │  • Min-Heap Indexed Priority Queue ([k1, k2] lexicographical keys)    │  │
 │  │  • Incremental rhs/g update loop with Key Modifier km                 │  │
 │  │  • Admissible Euclidean Heuristic h(s) = ||x(s) - x(sI)|| / vmax      │  │
+│  │  • Sub-microsecond replanning (0.33 µs - 8.4 µs)                      │  │
 │  └──────────────────────────┬─────────────────────────────▲──────────────┘  │
 │                             │                             │                 │
 │                             ▼                             │ Dynamic Replan  │

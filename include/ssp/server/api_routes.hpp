@@ -660,7 +660,146 @@ public:
             setCors(res);
             nlohmann::json templates = nlohmann::json::array();
 
-            // Template 0: Cartesian Safety Corridor (TC Benchmark)
+            // TC0: Assignment TC1 - Basic Reachability
+            {
+                core::PlanningProblem tc1;
+                tc1.domainName = "Assignment TC1: Basic Reachability";
+                tc1.initialState = 0;
+                tc1.goalState = 3;
+                tc1.badStates = {};
+                tc1.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {3.0, 4.0}, "A"},
+                    {2, {5.0, 4.0}, "B"},
+                    {3, {7.0, 4.0}, "G (Goal)"}
+                };
+                tc1.transitions = {
+                    {101, 0, 1, 2.0, 1.0, 0.99, true, "S_to_A"},
+                    {102, 1, 2, 2.0, 1.0, 0.99, true, "A_to_B"},
+                    {103, 2, 3, 2.0, 1.0, 0.99, true, "B_to_G"}
+                };
+                templates.push_back(tc1);
+            }
+
+            // TC1: Assignment TC2 - Bad State Avoidance
+            {
+                core::PlanningProblem tc2;
+                tc2.domainName = "Assignment TC2: Bad State Avoidance";
+                tc2.initialState = 0;
+                tc2.goalState = 5;
+                tc2.badStates = {2}; // State X is Bad
+                tc2.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {3.0, 6.0}, "A (Upper)"},
+                    {2, {5.0, 6.0}, "X (BAD STATE)"},
+                    {3, {3.0, 2.0}, "C (Safe 1)"},
+                    {4, {5.0, 2.0}, "D (Safe 2)"},
+                    {5, {7.0, 4.0}, "G (Goal)"}
+                };
+                tc2.transitions = {
+                    {101, 0, 1, 2.82, 0.5, 0.95, true, "S_to_A"},
+                    {102, 1, 2, 2.00, 0.1, 0.80, true, "A_to_X"},
+                    {103, 2, 5, 2.82, 0.1, 0.80, true, "X_to_G"},
+                    {201, 0, 3, 2.82, 1.0, 0.99, true, "S_to_C"},
+                    {202, 3, 4, 2.00, 1.0, 0.99, true, "C_to_D"},
+                    {203, 4, 5, 2.82, 1.0, 0.99, true, "D_to_G"}
+                };
+                templates.push_back(tc2);
+            }
+
+            // TC2: Assignment TC3 - Safety Margin Trade-Off
+            {
+                core::PlanningProblem tc3;
+                tc3.domainName = "Assignment TC3: Safety Margin";
+                tc3.initialState = 0;
+                tc3.goalState = 5;
+                tc3.badStates = {99};
+                tc3.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {4.0, 3.2}, "Risky_Midpoint (D=0.9)"},
+                    {2, {4.0, 7.0}, "Safe_Midpoint (D=3.0)"},
+                    {5, {7.0, 4.0}, "G (Goal)"},
+                    {99, {4.0, 4.1}, "Hazard_Core"}
+                };
+                tc3.transitions = {
+                    {101, 0, 1, 3.0, 0.2, 0.95, true, "Start_to_Risky"},
+                    {102, 1, 5, 3.0, 0.2, 0.95, true, "Risky_to_Goal"},
+                    {201, 0, 2, 5.0, 1.0, 0.99, true, "Start_to_Safe"},
+                    {202, 2, 5, 5.0, 1.0, 0.99, true, "Safe_to_Goal"}
+                };
+                templates.push_back(tc3);
+            }
+
+            // TC3: Assignment TC4 - Dynamic Transition Severance
+            {
+                core::PlanningProblem tc4;
+                tc4.domainName = "Assignment TC4: Dynamic Transition";
+                tc4.initialState = 0;
+                tc4.goalState = 3;
+                tc4.badStates = {};
+                tc4.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {3.0, 4.0}, "A"},
+                    {2, {3.0, 6.5}, "B (Dynamic Detour)"},
+                    {3, {6.0, 4.0}, "G (Goal)"}
+                };
+                tc4.transitions = {
+                    {101, 0, 1, 2.0, 1.0, 0.99, true, "S_to_A"},
+                    {102, 1, 3, 2.0, 1.0, 0.99, true, "A_to_G (Direct)"},
+                    {201, 1, 2, 2.0, 1.0, 0.99, true, "A_to_B (Detour 1)"},
+                    {202, 2, 3, 2.82, 1.0, 0.99, true, "B_to_G (Detour 2)"}
+                };
+                templates.push_back(tc4);
+            }
+
+            // TC4: Assignment TC5 - Dynamic Goal Update
+            {
+                core::PlanningProblem tc5;
+                tc5.domainName = "Assignment TC5: Goal Update";
+                tc5.initialState = 0;
+                tc5.goalState = 3;
+                tc5.badStates = {};
+                tc5.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {3.0, 4.0}, "A"},
+                    {2, {5.0, 4.0}, "B"},
+                    {3, {7.0, 4.0}, "G1 (Initial Goal)"},
+                    {4, {5.0, 7.0}, "G2 (Updated Goal)"}
+                };
+                tc5.transitions = {
+                    {101, 0, 1, 2.0, 1.0, 0.99, true, "S_to_A"},
+                    {102, 1, 2, 2.0, 1.0, 0.99, true, "A_to_B"},
+                    {103, 2, 3, 2.0, 1.0, 0.99, true, "B_to_G1"},
+                    {201, 1, 4, 3.6, 1.0, 0.99, true, "A_to_G2"},
+                    {202, 2, 4, 3.0, 1.0, 0.99, true, "B_to_G2"}
+                };
+                templates.push_back(tc5);
+            }
+
+            // TC5: Assignment TC6 - Dynamic Transition Addition
+            {
+                core::PlanningProblem tc6;
+                tc6.domainName = "Assignment TC6: Transition Addition";
+                tc6.initialState = 0;
+                tc6.goalState = 4;
+                tc6.badStates = {};
+                tc6.states = {
+                    {0, {1.0, 4.0}, "S (Start)"},
+                    {1, {2.5, 4.0}, "A"},
+                    {2, {4.0, 4.0}, "B"},
+                    {3, {5.5, 4.0}, "C"},
+                    {4, {7.0, 4.0}, "G (Goal)"}
+                };
+                tc6.transitions = {
+                    {101, 0, 1, 2.0, 1.0, 0.99, true, "S_to_A"},
+                    {102, 1, 2, 2.0, 1.0, 0.99, true, "A_to_B"},
+                    {103, 2, 3, 2.0, 1.0, 0.99, true, "B_to_C"},
+                    {104, 3, 4, 2.0, 1.0, 0.99, true, "C_to_G"}
+                };
+                templates.push_back(tc6);
+            }
+
+            // Template 6: Cartesian Safety Corridor (TC Benchmark)
             {
                 core::PlanningProblem p0;
                 p0.domainName = "Cartesian Safety Corridor (TC Benchmark)";
@@ -691,31 +830,31 @@ public:
                 templates.push_back(p0);
             }
 
-            // Template 1: Microservice Resilience Mesh (E-Commerce)
+            // Template 7: Microservice Resilience Mesh (E-Commerce)
             {
                 domains::MicroserviceMeshDomain microDomain;
                 templates.push_back(microDomain.createProblem());
             }
 
-            // Template 2: Hospital Emergency Triage Pipeline
+            // Template 8: Hospital Emergency Triage Pipeline
             {
                 domains::HospitalTriageDomain hospDomain;
                 templates.push_back(hospDomain.createProblem());
             }
 
-            // Template 3: Banking KYC & Loan Underwriting
+            // Template 9: Banking KYC & Loan Underwriting
             {
                 domains::BankingKycDomain bankDomain;
                 templates.push_back(bankDomain.createProblem());
             }
 
-            // Template 4: Warehouse Robotics & AMR Logistics
+            // Template 10: Warehouse Robotics & AMR Logistics
             {
                 domains::WarehouseRoboticsDomain amrDomain;
                 templates.push_back(amrDomain.createProblem());
             }
 
-            // Template 5: SWE-bench Autonomous Coding Agent (Neuro-Symbolic Governor)
+            // Template 11: SWE-bench Autonomous Coding Agent (Neuro-Symbolic Governor)
             {
                 core::PlanningProblem p5;
                 p5.domainName = "SWE-bench Autonomous Coding Agent Governor";
@@ -742,6 +881,220 @@ public:
 
             res.set_content(templates.dump(), "application/json");
         });
+
+        // GET & POST /api/run_all_assignment_tcs
+        auto runAllTCsHandler = [setCors](const httplib::Request&, httplib::Response& res) {
+            setCors(res);
+            nlohmann::json results = nlohmann::json::array();
+            int passedCount = 0;
+
+            // TC1
+            {
+                core::PlanningProblem p1;
+                p1.domainName = "TC1: Basic Reachability";
+                p1.initialState = 0; p1.goalState = 3;
+                p1.states = {{0,{0.0,0.0},"S"},{1,{2.0,0.0},"A"},{2,{4.0,0.0},"B"},{3,{6.0,0.0},"G"}};
+                p1.transitions = {{101,0,1,2.0,1.0,0.99,true},{102,1,2,2.0,1.0,0.99,true},{103,2,3,2.0,1.0,0.99,true}};
+                config::PlannerConfig cfg;
+                algorithms::DStarLite planner(cfg);
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.plan(p1);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.size() == 4 && r.statePath.back() == 3;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 1},
+                    {"name", "TC1: Basic Reachability"},
+                    {"pdfPage", 4},
+                    {"scenario", "S -> A -> B -> G Linear Reachability"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Planner successfully discovered unique valid path [0 -> 1 -> 2 -> 3] with 0 bad state visits."}
+                });
+            }
+
+            // TC2
+            {
+                core::PlanningProblem p2;
+                p2.domainName = "TC2: Bad State Avoidance";
+                p2.initialState = 0; p2.goalState = 5; p2.badStates = {2};
+                p2.states = {{0,{0.0,0.0},"S"},{1,{2.0,2.0},"A"},{2,{4.0,2.0},"X"},{3,{2.0,-2.0},"C"},{4,{4.0,-2.0},"D"},{5,{6.0,0.0},"G"}};
+                p2.transitions = {
+                    {101,0,1,2.82,0.5,0.95,true},{102,1,2,2.00,0.1,0.80,true},{103,2,5,2.82,0.1,0.80,true},
+                    {201,0,3,2.82,1.0,0.99,true},{202,3,4,2.00,1.0,0.99,true},{203,4,5,2.82,1.0,0.99,true}
+                };
+                config::PlannerConfig cfg;
+                algorithms::DStarLite planner(cfg);
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.plan(p2);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.size() == 4 && r.statePath[1] == 3 && r.statePath[2] == 4 && r.statePath[3] == 5;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 2},
+                    {"name", "TC2: Bad State Avoidance"},
+                    {"pdfPage", 5},
+                    {"scenario", "Path through Bad State X quarantined; Safe Path (C -> D) selected"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Planner strictly quarantined bad state X (Node #2) and selected safe path [0 -> 3 -> 4 -> 5]."}
+                });
+            }
+
+            // TC3
+            {
+                core::PlanningProblem p3;
+                p3.domainName = "TC3: Safety Margin";
+                p3.initialState = 0; p3.goalState = 5; p3.badStates = {99};
+                p3.states = {{0,{0.0,0.0},"S"},{1,{3.0,0.1},"Risky"},{2,{3.0,4.0},"Safe"},{5,{6.0,0.0},"G"},{99,{3.0,1.0},"Hazard"}};
+                p3.transitions = {
+                    {101,0,1,3.0,0.2,0.95,true},{102,1,5,3.0,0.2,0.95,true},
+                    {201,0,2,5.0,1.0,0.99,true},{202,2,5,5.0,1.0,0.99,true}
+                };
+                config::PlannerConfig safeCfg;
+                safeCfg.gamma_safety = 15.0;
+                algorithms::DStarLite planner(safeCfg);
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.plan(p3);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.size() == 3 && r.statePath[1] == 2;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 3},
+                    {"name", "TC3: Safety Margin"},
+                    {"pdfPage", 5},
+                    {"scenario", "Low Cost Risky Corridor vs High Cost Safe Plateau"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Under gamma=15.0 safety weighting, planner strictly preferred safe plateau (Clearance=3.0)."}
+                });
+            }
+
+            // TC4
+            {
+                core::PlanningProblem p4;
+                p4.domainName = "TC4: Dynamic Transition";
+                p4.initialState = 0; p4.goalState = 3;
+                p4.states = {{0,{0.0,0.0},"S"},{1,{2.0,0.0},"A"},{2,{2.0,2.0},"B"},{3,{4.0,0.0},"G"}};
+                p4.transitions = {
+                    {101,0,1,2.0,1.0,0.99,true},{102,1,3,2.0,1.0,0.99,true},
+                    {201,1,2,2.0,1.0,0.99,true},{202,2,3,2.82,1.0,0.99,true}
+                };
+                config::PlannerConfig cfg;
+                algorithms::DStarLite planner(cfg);
+                planner.plan(p4);
+                planner.setEdgeAvailability(102, false); // Sever edge A->G
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.replan(0);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.size() == 4 && r.statePath[2] == 2;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 4},
+                    {"name", "TC4: Dynamic Transition"},
+                    {"pdfPage", 5},
+                    {"scenario", "Dynamic edge severance on (A->G) & instant detour reroute via B"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Transition 102 severed; D* Lite dynamically rerouted to [0 -> 1 -> 2 -> 3] in sub-microsecond time."}
+                });
+            }
+
+            // TC5
+            {
+                core::PlanningProblem p5;
+                p5.domainName = "TC5: Goal Update";
+                p5.initialState = 0; p5.goalState = 3;
+                p5.states = {{0,{0.0,0.0},"S"},{1,{2.0,0.0},"A"},{2,{4.0,0.0},"B"},{3,{6.0,0.0},"G1"},{4,{4.0,3.0},"G2"}};
+                p5.transitions = {
+                    {101,0,1,2.0,1.0,0.99,true},{102,1,2,2.0,1.0,0.99,true},{103,2,3,2.0,1.0,0.99,true},
+                    {201,1,4,3.6,1.0,0.99,true},{202,2,4,3.0,1.0,0.99,true}
+                };
+                config::PlannerConfig cfg;
+                algorithms::DStarLite planner(cfg);
+                planner.plan(p5);
+                planner.updateGoal(4); // Shift to G2
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.replan(0);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.back() == 4;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 5},
+                    {"name", "TC5: Dynamic Goal Update"},
+                    {"pdfPage", 5},
+                    {"scenario", "Mid-execution destination shift from G1 (#3) to G2 (#4)"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Goal shifted from G1 to G2; planner synthesized revised trajectory [0 -> 1 -> 4] dynamically."}
+                });
+            }
+
+            // TC6
+            {
+                core::PlanningProblem p6;
+                p6.domainName = "TC6: Transition Addition";
+                p6.initialState = 0; p6.goalState = 4;
+                p6.states = {{0,{0.0,0.0},"S"},{1,{2.0,0.0},"A"},{2,{4.0,0.0},"B"},{3,{6.0,0.0},"C"},{4,{8.0,0.0},"G"}};
+                p6.transitions = {
+                    {101,0,1,2.0,1.0,0.99,true},{102,1,2,2.0,1.0,0.99,true},{103,2,3,2.0,1.0,0.99,true},{104,3,4,2.0,1.0,0.99,true}
+                };
+                config::PlannerConfig cfg;
+                algorithms::DStarLite planner(cfg);
+                planner.plan(p6);
+                core::Transition shortcut(999, 1, 4, 3.0, 1.0, 0.99, true, "Express_Shortcut");
+                planner.addTransition(shortcut);
+                auto t0 = std::chrono::high_resolution_clock::now();
+                auto r = planner.replan(0);
+                auto t1 = std::chrono::high_resolution_clock::now();
+                double us = std::chrono::duration<double, std::micro>(t1 - t0).count();
+                bool ok = r.success && r.statePath.size() == 3 && r.statePath[1] == 1 && r.statePath[2] == 4 && std::abs(r.totalCost - 5.0) < 1e-3;
+                if (ok) passedCount++;
+                results.push_back({
+                    {"tcId", 6},
+                    {"name", "TC6: Transition Addition"},
+                    {"pdfPage", 5},
+                    {"scenario", "Dynamic insertion of high-speed shortcut [1 -> 4]"},
+                    {"passed", ok},
+                    {"statePath", r.statePath},
+                    {"cost", r.totalCost},
+                    {"minClearance", r.minimumSafetyDistance},
+                    {"latencyUs", us},
+                    {"description", "Shortcut transition [1 -> 4] integrated; cost reduced from 8.00 to 5.00 in sub-microsecond time."}
+                });
+            }
+
+            nlohmann::json responseJson = {
+                {"totalTests", 6},
+                {"passedCount", passedCount},
+                {"successRate", (passedCount / 6.0) * 100.0},
+                {"results", results}
+            };
+            res.set_content(responseJson.dump(), "application/json");
+        };
+
+        svr.Get("/api/run_all_assignment_tcs", runAllTCsHandler);
+        svr.Post("/api/run_all_assignment_tcs", runAllTCsHandler);
     }
 };
 

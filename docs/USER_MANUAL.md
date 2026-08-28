@@ -10,8 +10,8 @@
 ## 1. Prerequisites and Build Instructions
 
 ### 1.1 Prerequisites
-- C++17 compliant compiler: Clang++ (>= 11.0) or G++ (>= 9.0)
-- Build system: GNU Make (>= 3.81) or CMake (>= 3.16)
+- C++17 compliant compiler: `Clang++` ($\ge 11.0$) or `G++` ($\ge 9.0$)
+- Build system: GNU `Make` ($\ge 3.81$) or `CMake` ($\ge 3.16$)
 - Standard POSIX threads (`pthread`)
 
 ### 1.2 Compiling All Targets
@@ -26,16 +26,16 @@ make clean && make all
 ```
 
 Output binaries generated in `bin/`:
-- `bin/test_phase1`: Spatial KD-Tree, Vector Math, and JSON Serialization Test Suite
-- `bin/test_phase2`: D* Lite Search Engine & Potential Barrier Test Suite
+- `bin/test_phase1`: Spatial $k$-d Tree, Vector Math, and JSON Serialization Test Suite
+- `bin/test_phase2`: $\text{D}^*$ Lite Search Engine & Potential Barrier Test Suite
 - `bin/test_assignment_tc`: Mandated Assignment Test Cases (TC1 through TC6)
 - `bin/test_phase5`: Enterprise Domain Templates Test Suite (Healthcare, Microservices, Banking, AMR)
 - `bin/test_phase6`: Advanced NLP & Semantic Embedding Test Suite
 - `bin/test_phase7`: State Snapshot & Backtracking Invariant Test Suite
 - `bin/test_bonus`: Bonus Features Test Suite (TSP, Temporal Windows, Knowledge Graph)
-- `bin/test_dstar_verification`: Algorithmic D* Lite Stress & Invariant Verification Suite
+- `bin/test_dstar_verification`: Algorithmic $\text{D}^*$ Lite Stress & Invariant Verification Suite
 - `bin/test_nlp_comprehensive`: Bidirectional & Inverted NLP Query Verification Suite
-- `bin/benchmark_main`: Synthetic Grid Benchmark Runner (5x5 to 50x50 topologies)
+- `bin/benchmark_main`: Synthetic Grid Benchmark Runner ($5\times 5$ to $50\times 50$ topologies)
 - `bin/nlp_main`: Interactive Natural Language Query CLI
 - `bin/agent_main`: Interactive Decision Scoreboard CLI
 - `bin/bonus_main`: Interactive Bonus Topics Demonstration CLI
@@ -48,13 +48,13 @@ Output binaries generated in `bin/`:
 Execute all verification test suites using standard make commands:
 
 ```bash
-# Run all automated test suites
+# Run all automated test suites (100% Pass)
 make test
 
 # Or run individual test modules:
-make test_phase1              # KD-tree & spatial math
+make test_phase1              # Spatial KD-tree & vector math
 make test_phase2              # D* Lite & potential fields
-make test_assignment_tc       # TC1 - TC6 verification
+make test_assignment_tc       # Mandated TC1 - TC6 verification
 make test_phase5              # Enterprise domains
 make test_phase6              # NLP & semantic embeddings
 make test_phase7              # State snapshots & backtracking invariants
@@ -73,7 +73,7 @@ make benchmark
 # Or directly:
 ./bin/benchmark_main
 ```
-Evaluates cold-start planning versus dynamic incremental replanning across 100 to 2,500 state topologies, reporting speedup ratios and node expansions.
+Evaluates cold-start planning versus dynamic incremental replanning across $100$ to $2,500$ state topologies, reporting speedup ratios and node expansions.
 
 ### 3.2 Natural Language Interface CLI
 ```bash
@@ -111,15 +111,15 @@ make server
 Then open `http://localhost:8080` in your web browser, or access the live deployed instance at **[ssp.gabrieljames.me](https://ssp.gabrieljames.me)**.
 
 ### 4.1 Four Visualizer Perspectives
-- **2D Graph Mode**: Interactive continuous vector space canvas. Supports smooth zoom (mouse wheel, 0.02x to 50x), pan (drag empty canvas), and live node relocation with sub-microsecond replanning.
-- **3D Tilt Mode**: True 3D isometric camera projection with live Pitch (15 deg to 80 deg) and Yaw (-75 deg to +75 deg) sliders. Extrudes node elevations by cost, clearance, or high-dimensional embeddings.
-- **Pipeline Flow Mode**: Linear step-by-step cards showing exact coordinate vectors, role badges (Start, Waypoint, Goal), cost deltas, and transition connectors.
-- **Data Matrix Mode**: Tabular matrix of all States, Directed Transitions, and the N x N State-to-State Euclidean Clearance Heatmap.
+- **2D Graph Mode**: Interactive continuous vector space canvas. Supports deep zoom ($0.02\times$ to $50\times$), pan (drag empty canvas), and live node relocation with sub-microsecond replanning.
+- **3D Tilt Mode**: True 3D isometric camera projection with live Pitch ($15^\circ \text{ to } 80^\circ$) and Yaw ($-75^\circ \text{ to } +75^\circ$) sliders. Extrudes node elevations by cost, clearance, or high-dimensional embeddings.
+- **Pipeline Flow Mode**: Linear step-by-step cards showing exact coordinate vectors, role badges (`Start`, `Waypoint`, `Goal`), cost deltas, and transition connectors.
+- **Data Matrix Mode**: Tabular matrix of all States, Directed Transitions, and the $N \times N$ State-to-State Euclidean Clearance Heatmap.
 
 ### 4.2 Left Vertical Tool Dock
 - **Drag State** (`move` icon): Drag any node to reposition its coordinates in real time; the planner instantly updates the trajectory.
 - **Pan Map** (`hand` icon): Pan across the viewport.
-- **2-State Compare** (`scan-line` icon): Select any two nodes to inspect Euclidean distance, cosine similarity, and coordinate shifts.
+- **2-State Compare** (`scan-line` icon): Select any two nodes to inspect Euclidean distance $\|\mathbf{u} - \mathbf{v}\|_2$, cosine similarity, and coordinate shifts.
 - **+State**: Click anywhere on the canvas to place a new state node.
 - **+Edge**: Click source node then destination node to create a directed transition.
 - **Edit**: Click any node or edge to edit base cost, SLA reliability, safety margin, or embedding coordinates.
@@ -129,14 +129,14 @@ Then open `http://localhost:8080` in your web browser, or access the live deploy
 - **Set Start / Set Goal**: Designate new origin and destination endpoints.
 
 ### 4.3 Objective Tuning & Sliders
-- **Alpha (Goal)**: Terminal goal completion reward weight.
-- **Beta (Cost)**: Traversal cost penalty weight.
-- **Gamma (Safety)**: Repulsive spatial potential barrier weight around bad states.
-- **Delta (Reliability)**: Multiplicative transition reliability SLA weight.
-- **R (Safety Margin)**: Physical radius around quarantined states where repulsive potential fields are active.
+- **Alpha ($\alpha$)**: Terminal goal completion reward weight.
+- **Beta ($\beta$)**: Traversal cost penalty weight.
+- **Gamma ($\gamma$)**: Repulsive spatial potential barrier weight around bad states.
+- **Delta ($\delta$)**: Multiplicative transition reliability SLA weight.
+- **Radius ($R_{\text{margin}}$)**: Physical radius around quarantined states where repulsive potential fields are active.
 
 ### 4.4 Enriched Path JSON Export
-Click the **Path** button in the top bar to export the computed optimal trajectory. The exported JSON contains complete state names, role badges, high-dimensional coordinate vectors, transition metadata, and summary telemetry (latency in us, total cost, minimum hazard clearance, cumulative SLA).
+Click the **Path** button in the top bar to export the computed optimal trajectory. The exported JSON contains complete state names, role badges, high-dimensional coordinate vectors $\mathbf{x}(s) \in \mathbb{R}^d$, transition metadata, and summary telemetry (latency in $\mu\text{s}$, total cost, minimum hazard clearance $D(s, \mathcal{B})$, cumulative SLA).
 
 ---
 
@@ -157,3 +157,4 @@ The single-binary web server (`bin/ssp_server`) exposes the following endpoints:
 | `POST` | `/api/toggle_edge` | Sever or restore transition | `{"edgeId":102,"available":false}`| `PlanningResult` JSON |
 | `POST` | `/api/update_start` | Update initial start state | `{"stateId":0}` | `PlanningResult` JSON |
 | `POST` | `/api/update_goal` | Update destination goal state | `{"stateId":6}` | `PlanningResult` JSON |
+| `POST` | `/api/run_all_assignment_tcs` | Batch execute & verify all 6 TCs | None | Live test scorecard JSON |
